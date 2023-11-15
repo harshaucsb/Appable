@@ -1,0 +1,39 @@
+<div class="d-flex justify-content-center my-4">
+  <%= link_to 'Home', root_path, class: 'btn btn-primary' %>
+</div>
+
+<h1 class="mb-4">New Post</h1>
+
+<%= form_with scope: :post, url: posts_path, local: true, html: { class: "needs-validation", novalidate: true } do |form| %>
+  <% if @post.errors.any? %>
+    <div id="error_explanation" class="alert alert-danger">
+      <h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
+      <ul>
+        <% @post.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field mb-3">
+    <%= form.label :title, class: 'form-label' %>
+    <%= form.text_field :title, class: 'form-control' %>
+  </div>
+
+  <div class="field mb-3">
+    <%= form.label :content, class: 'form-label' %>
+    <%= form.text_area :content, class: 'form-control', rows: 6 %>
+  </div>
+
+  <div class="field mb-3">
+    <%= form.label :user_id, class: 'form-label' %>
+    <%= form.collection_select :user_id, User.all, :id, :name, { prompt: "Choose a user" }, { class: 'form-select' } %>
+  </div>
+  
+  <div class="actions">
+    <%= form.submit 'Create Post', class: 'btn btn-primary' %>
+  </div>
+<% end %>
+
+<%= link_to 'Back', posts_path, class: 'btn btn-secondary mt-3' %>

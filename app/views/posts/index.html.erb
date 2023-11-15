@@ -1,0 +1,27 @@
+<h1 class="my-4">All Posts</h1>
+
+<div class="d-flex justify-content-center my-4">
+  <%= link_to 'All Users', users_path, class: 'btn btn-primary' %>
+</div>
+
+<div class="row row-cols-1 row-cols-md-2 g-4">
+  <% @posts.each do |post| %>
+    <div class="col">
+      <div class="card h-100">
+        <div class="card-body">
+          <h2 class="card-title"><%= post.title %></h2>
+          <p class="card-text"><%= truncate(post.content, length: 250) %></p>
+        </div>
+        <div class="card-footer text-muted">
+          Posted by <%= post.user.name %> at <%= post.created_at.strftime("%B %d, %Y %H:%M") %>
+        </div>
+        <%= link_to 'Show Post', post_path(post), class: 'btn btn-primary' %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<%= link_to 'New Post', new_post_path, class: 'btn btn-success my-4' %>
+
+
+

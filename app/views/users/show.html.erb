@@ -1,0 +1,59 @@
+<div class="d-flex justify-content-center my-4">
+  <%= link_to 'Home', root_path, class: 'btn btn-primary' %>
+</div>
+
+<div class="container mt-4">
+  <h1>User Details</h1>
+
+  <div class="card mb-4">
+    <div class="card-header">
+      <h2><%= @user.name %></h2>
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">Email: <%= @user.email %></h5>
+    </div>
+  </div>
+
+  <h2>Posts</h2>
+  <% @user.posts.each do |post| %>
+    <div class="card mb-3">
+      <div class="card-body">
+        <h3 class="card-title"><%= post.title %></h3>
+        <p class="card-text"><%= post.content %></p>
+        <%= link_to 'Show Post', post_path(post), class: 'btn btn-secondary' %>
+      </div>
+    </div>
+  <% end %>
+
+  <%= link_to 'New Post', new_post_path, class: 'btn btn-primary' %>
+</div>
+
+<div class="container mt-4">
+  <h2>Current Friends</h2>
+  <div class="row">
+  <% (@user.friends + @user.inverse_friends).uniq.each do |friend| %>
+    <div class="col-md-4">
+      <div class="card mb-3">
+        <div class="card-body">
+          <h4 class="card-title"><%= friend.name %></h4>
+          <%= link_to 'View Profile', user_path(friend), class: 'btn btn-primary' %>
+          <%= button_to 'Remove Friend', remove_friend_path, method: :delete, params: { user_id: @user.id, friend_id: friend.id }, class: 'btn btn-danger' %>
+          <%= button_to 'Send Message', new_message_path, params: { sender_id: @user.id, receiver_id: friend.id }, class: 'btn btn-info' %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  </div>
+</div>
+
+  <div class="container mt-4">
+    <h2>Other Users</h2>
+    <% @other_users.each do |other_user| %>
+      <div class="card mb-3">
+        <div class="card-body d-flex justify-content-between align-items-center">
+          <h3 class="card-title"><%= other_user.name %></h3>
+          <%= button_to 'Add Friend', add_friend_path, method: :post, params: { user_id: @user.id, friend_id: other_user.id }, class: 'btn btn-success' %>
+        </div>
+      </div>
+    <% end %>
+  </div>
