@@ -1,0 +1,7 @@
+<h1><%= @user.name %>'s Friends</h1>
+
+<ul>
+  <% @friends.each do |friend| %>
+    <li><%= friend.name %> - <%= link_to 'View Profile', user_path(friend) %></li>
+  <% end %>
+</ul>
