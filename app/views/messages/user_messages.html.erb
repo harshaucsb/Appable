@@ -1,0 +1,23 @@
+<div class="container mt-4">
+  <h1>Chats for <%= @user.name %></h1>
+  
+  <h2>Sent Messages</h2>
+  <% @sent_messages.each do |message| %>
+    <div class="card mb-2">
+      <div class="card-body">
+        <p class="card-text"><%= message.content %></p>
+        <footer class="blockquote-footer">To: <%= message.receiver.name %></footer>
+      </div>
+    </div>
+  <% end %>
+
+  <h2>Received Messages</h2>
+  <% @received_messages.each do |message| %>
+    <div class="card mb-2">
+      <div class="card-body">
+        <p class="card-text"><%= message.content %></p>
+        <footer class="blockquote-footer">From: <%= message.sender.name %></footer>
+      </div>
+    </div>
+  <% end %>
+</div>

@@ -21,26 +21,29 @@ class UsersController < ApplicationController
         user = User.find(params[:user_id]) 
         friend = User.find(params[:friend_id])
         
-        # Directly create the friendship without any checks
+        # Directly create the following without any checks
         user.friends << friend
-        friend.friends << user
         
         # Redirect to the user's page with a success message
-        redirect_to user_path(user), notice: 'Friend added successfully.'
+        redirect_to user_path(user), notice: 'Friend followed successfully.'
     end
 
     def remove_friend
         user = User.find(params[:user_id])
         friend = User.find(params[:friend_id])
     
-        # Remove the friend from both sides
+        # Remove person from user's following list
         user.friends.delete(friend)
-        friend.friends.delete(user)
     
         # Redirect to the user's page with a success message
-        redirect_to user_path(user), notice: 'Friend removed successfully.'
+        redirect_to user_path(user), notice: 'Friend unfollowed successfully.'
     end
-    
+
+    def show_messages
+        @user = User.find(params[:id])
+        @sent_messages = @user.sent_messages
+        @received_messages = @user.received_messages
+    end
 
     def new
         @user = User.new
