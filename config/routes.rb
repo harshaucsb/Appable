@@ -23,6 +23,9 @@ Rails.application.routes.draw do
 
   post '/messages/new', to: 'messages#create'
 
+  # This route will need to be placed under the users resources if you're scoping it under a user
+  get 'users/:id/messages', to: 'users#show_messages', as: :user_messages
+
   resources :messages, only: [:new, :create, :index]
 
 
