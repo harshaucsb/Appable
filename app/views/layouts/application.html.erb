@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>TwitterClone</title>
+    <title>Appable</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <% if user_signed_in? %>
+      <%= button_to 'Sign out', destroy_user_session_path, method: :delete %>
+    <% end %>
+
 
   </head>
 
