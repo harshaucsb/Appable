@@ -34,7 +34,8 @@ class PostsController < ApplicationController
     def create
         puts "Reached create method of Posts"
         puts post_params
-        @post = Post.new(post_params)
+        #@post = Post.new(post_params)
+        @post = current_user.posts.build(post_params)
         if @post.save
             redirect_to @post, notice: 'Post was successfully created.'
         else
@@ -64,6 +65,7 @@ class PostsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def post_params
-        params.require(:post).permit(:title, :content, :user_id)
+       # params.require(:post).permit(:title, :content, :user_id)
+        params.require(:post).permit(:title, :content)
     end
 end

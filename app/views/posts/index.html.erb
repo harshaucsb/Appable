@@ -13,7 +13,7 @@
           <p class="card-text"><%= truncate(post.content, length: 250) %></p>
         </div>
         <div class="card-footer text-muted">
-          Posted by <%= post.user.name %> at <%= post.created_at.strftime("%B %d, %Y %H:%M") %>
+          Posted by <%= @user.name %> at <%= post.created_at.strftime("%B %d, %Y %H:%M") %>
         </div>
         <%= link_to 'Show Post', post_path(post), class: 'btn btn-primary' %>
       </div>
