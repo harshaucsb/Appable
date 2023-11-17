@@ -18,6 +18,9 @@ Rails.application.routes.draw do
   # Add the remove_friend route
   delete '/remove_friend/:id', to: 'users#remove_friend', as: 'remove_friend'
 
+  # config/routes.rb
+  get 'chat/:user_id/:friend_id', to: 'messages#chat', as: 'chat'
+
   post '/messages/new', to: 'messages#create'
 
   resources :posts do

@@ -21,4 +21,12 @@ class User < ApplicationRecord
     # Return all posts of the user and his/her friends
     Post.where(user: (friends + [self])).order(updated_at: :desc)
   end
+
+  def display_messages_with_a_user(friend)
+    # Return all messages between the user and a friend
+    { 
+      sent_messages: Message.where(sender: self, receiver: friend).order(created_at: :desc),
+      received_messages: Message.where(sender: friend, receiver: self).order(created_at: :desc)
+    }
+  end
 end

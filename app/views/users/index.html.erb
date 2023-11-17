@@ -25,7 +25,7 @@
           <% end %>
           <td><%= user.email %></td>
           <td><%= link_to 'Show', user, class: 'btn btn-outline-primary btn-sm' %></td>
-          <td><%= link_to 'Message', new_message_path, class: 'btn btn-outline-primary btn-sm' %></td>
+          <td><%= link_to 'Message', new_message_path(friend_id: user.id), class: 'btn btn-outline-primary btn-sm' %></td>
           <% if user_signed_in? && current_user==user %>
             <td><%= link_to 'Edit', edit_user_path(user), class: 'btn btn-outline-secondary btn-sm' %></td>
             <td>

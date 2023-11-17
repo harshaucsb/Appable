@@ -53,8 +53,8 @@
             <h3 class="card-title"><%= other_user.name %></h3>
             <div>
               <%= button_to 'Follow', add_friend_path, method: :post, params: { user_id: @user.id, friend_id: other_user.id }, class: 'btn btn-success' %>
-              <%= link_to 'Show Profile', user_path(other_user), class: 'btn btn-primary' %>
-              <%= link_to 'Send Message', new_message_path, class: 'btn btn-info' %>
+              <%= link_to 'Profile', user_path(other_user), class: 'btn btn-primary' %>
+              <%= link_to 'Message', new_message_path(friend_id: other_user.id), class: 'btn btn-info' %>
             </div>
           </div>
         </div>

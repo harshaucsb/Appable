@@ -1,18 +1,45 @@
+<div class="d-flex justify-content-center">
+  <%= link_to 'Home', root_path, class: 'btn btn-outline-primary btn-sm me-2' %>
+  <%= link_to 'My Profile', user_path(current_user), class: 'btn btn-outline-primary btn-sm me-2' %>
+</div>
+
 <h1 class="mb-4">New Message</h1>
+
 <%= form_with(model: @message, local: true) do |form| %>
   <!-- ... other form fields ... -->
-  
+
   <div class="field">
     <%= form.label :content %>
     <%= form.text_area :content %>
   </div>
 
-  <div class="field">
-    <%= form.label :receiver_id %>
-    <%= form.collection_select :receiver_id, User.all, :id, :name, include_blank: true %>
-  </div>
+  <%= form.hidden_field :receiver_id, value: @other_user.id %>
 
   <div class="actions">
     <%= form.submit 'Send Message', class: 'btn btn-primary' %>
   </div>
 <% end %>
+
+<div class="container mt-4">
+  <h1>Chats with <%= @other_user.name %></h1>
+  
+  <h2>Sent Messages</h2>
+  <% current_user.display_messages_with_a_user(@other_user)[:sent_messages].each do |message| %>
+    <div class="card mb-2">
+      <div class="card-body">
+        <p class="card-text"><%= message.content %></p>
+        <footer class="blockquote-footer">To: <%= message.receiver.name %></footer>
+      </div>
+    </div>
+  <% end %>
+
+  <h2>Received Messages</h2>
+  <% current_user.display_messages_with_a_user(@other_user)[:received_messages].each do |message| %>
+    <div class="card mb-2">
+      <div class="card-body">
+        <p class="card-text"><%= message.content %></p>
+        <footer class="blockquote-footer">From: <%= message.sender.name %></footer>
+      </div>
+    </div>
+  <% end %>
+</div>
