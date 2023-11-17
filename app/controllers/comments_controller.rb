@@ -1,9 +1,7 @@
 class CommentsController < ApplicationController
+    before_action :authenticate_user!
+    before_action :set_post
     before_action :set_comment, only: [:show, :edit, :update, :destroy]
-    
-    def index
-        @comments = Comment.all
-    end
 
     def show
         begin
@@ -14,54 +12,56 @@ class CommentsController < ApplicationController
     end
 
     def new
-        @post = Post.find(params[:post_id])
         @comment = Comment.new
     end
 
-    def edit
-        @comment = Comment.find(params[:id])
-
-        #if @comment != current_comment
-        #    redirect_to root_path, notice: "Sorry, but you are only allowed to edit your own profile."
-        #end
+    def create
+        @comment = @post.comments.build(comment_params.merge(user: current_user))
+        if @comment.save
+            # Handle successful save
+            redirect_to @post, notice: 'Comment was successfully created.'
+        else
+            # Handle save failure
+            render :new, status: :unprocessable_entity
+        end
     end
 
-    def create
-        @post = Post.find(params[:post_id])
-        @comment = @post.comments.new(comment_params)
-        @comment.user = current_user
-    
-        if @comment.save
-          redirect_to @post, notice: 'Comment was successfully created.'
-        else
-          render :new, status: :unprocessable_entity
-        end
-      end
-
     def update
-        if @comment.update(comment_params)
-            redirect_to @comment, notice: 'Comment was successfully updated.'
-        else
+        # Update a comment
+        if @comment.user != current_user
+            # Handle unauthorized updation
             render :edit
+        else
+            @comment.update(comment_params)
+            # Handle comment deletion
+            redirect_to @post, notice: 'Comment was successfully updated.'
         end
     end
 
     def destroy
-        @comment.destroy
-        redirect_to comments_url, notice: 'Comment was successfully destroyed.'
+        # Delete a comment
+        if @post.user != current_user || @comment.user != current_user
+            # Handle unauthorized deletion
+            redirect_to @comment, notice: 'Only owner of the post/comment is allowed to delete.'
+        else
+            @comment.destroy
+            # Handle comment deletion
+            redirect_to @post, notice: 'Comment was successfully destroyed.'
+        end
     end
 
     private
-    
-    # Use callbacks to share common setup or constraints between actions.
+
+    def set_post
+        @post = Post.find(params[:post_id])
+    end
+
     def set_comment
         @comment = Comment.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
     def comment_params
-        #params.require(:comment).permit(:content, :user_id)
         params.require(:comment).permit(:content)
     end
-
 end
+  

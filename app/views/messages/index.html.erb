@@ -1,6 +1,10 @@
-<div class="d-flex justify-content-center">
-  <%= link_to 'Home', root_path, class: 'btn btn-outline-primary btn-sm me-2' %>
-  <%= link_to 'My Profile', user_path(current_user), class: 'btn btn-outline-primary btn-sm me-2' %>
+<div class="d-flex justify-content-center my-4">
+  <% if user_signed_in? %>
+  <%= link_to 'Home', user_path(current_user) %>
+  <% else %>
+  <%= link_to 'Home', root_path %>
+  <% end %>
+
 </div>
 
 
@@ -8,7 +12,7 @@
   <h1>Chats for <%= @user.name %></h1>
   
   <h2>Sent Messages</h2>
-  <% @sent_messages.each do |message| %>
+  <% @user.sent_messages.each do |message| %>
     <div class="card mb-2">
       <div class="card-body">
         <p class="card-text"><%= message.content %></p>
@@ -18,7 +22,7 @@
   <% end %>
 
   <h2>Received Messages</h2>
-  <% @received_messages.each do |message| %>
+  <% @user.received_messages.each do |message| %>
     <div class="card mb-2">
       <div class="card-body">
         <p class="card-text"><%= message.content %></p>

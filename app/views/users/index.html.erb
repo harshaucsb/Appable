@@ -1,9 +1,6 @@
-<div class="d-flex justify-content-center my-4">
-  <% if user_signed_in? %>
-  <%= link_to 'Home', user_path(current_user) %>
-  <% else %>
-  <%= link_to 'Home', root_path %>
-  <% end %>
+<div class="d-flex justify-content-center">
+  <%= link_to 'Home', root_path, class: 'btn btn-outline-primary btn-sm me-2' %>
+  <%= link_to 'My Profile', user_path(current_user), class: 'btn btn-outline-primary btn-sm me-2' %>
 </div>
 
 <div class="container mt-4">
@@ -21,21 +18,32 @@
     <tbody>
       <% @users.each do |user| %>
         <tr>
-          <td><%= user.name %></td>
+          <% if user_signed_in? && current_user==user %>
+            <td><%= user.name.titleize + " (You)" %></td>
+          <% else %>
+            <td><%= user.name.titleize %></td>
+          <% end %>
           <td><%= user.email %></td>
           <td><%= link_to 'Show', user, class: 'btn btn-outline-primary btn-sm' %></td>
-          <td><%= link_to 'Edit', edit_user_path(user), class: 'btn btn-outline-secondary btn-sm' %></td>
-          <td>
-            <%= button_to 'Destroy', user_path(user), 
-                          method: :delete, 
-                          class: 'btn btn-outline-danger btn-sm',
-                          data: { turbo_confirm: "Are you sure?" } %>
+          <td><%= link_to 'Message', new_message_path, class: 'btn btn-outline-primary btn-sm' %></td>
+          <% if user_signed_in? && current_user==user %>
+            <td><%= link_to 'Edit', edit_user_path(user), class: 'btn btn-outline-secondary btn-sm' %></td>
+            <td>
+              <%= button_to 'Destroy', user_path(user), 
+                            method: :delete, 
+                            class: 'btn btn-outline-danger btn-sm',
+                            data: { turbo_confirm: "Are you sure?" } %>
+          <% else %>
+            <% if %>
+              <td><%= button_to 'Follow', add_friend_path(current_user), method: :post, params: { friend_id: user.id }, class: 'btn btn-outline-primary btn-sm' %></td>
+            <% else %>
+              <td><%= button_to 'Unfollow', remove_friend_path(current_user), method: :delete, params: { friend_id: user.id }, class: 'btn btn-outline-danger btn-sm' %></td>
+            <% end %>
+          <% end %>
           </td>
         </tr>
       <% end %>
     </tbody>
   </table>
-
-  <%= link_to 'New User', new_user_path, class: 'btn btn-primary' %>
 </div>
 

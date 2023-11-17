@@ -12,11 +12,6 @@
     <%= form.collection_select :receiver_id, User.all, :id, :name, include_blank: true %>
   </div>
 
-  <div class="field">
-    <%= form.label :sender_id %>
-    <%= form.collection_select :sender_id, User.all, :id, :name, include_blank: true %>
-  </div>
-
   <div class="actions">
     <%= form.submit 'Send Message', class: 'btn btn-primary' %>
   </div>

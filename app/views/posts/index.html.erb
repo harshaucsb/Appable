@@ -1,8 +1,9 @@
-<h1 class="my-4">All Posts</h1>
-
-<div class="d-flex justify-content-center my-4">
-  <%= link_to 'All Users', users_path, class: 'btn btn-primary' %>
+<div class="d-flex justify-content-center">
+  <%= link_to 'Home', root_path, class: 'btn btn-outline-primary btn-sm me-2' %>
+  <%= link_to 'My Profile', user_path(current_user), class: 'btn btn-outline-primary btn-sm me-2' %>
 </div>
+
+<h1 class="my-4">Public Posts</h1>
 
 <div class="row row-cols-1 row-cols-md-2 g-4">
   <% @posts.each do |post| %>
@@ -13,15 +14,13 @@
           <p class="card-text"><%= truncate(post.content, length: 250) %></p>
         </div>
         <div class="card-footer text-muted">
-          Posted by <%= @user.name %> at <%= post.created_at.strftime("%B %d, %Y %H:%M") %>
+          Posted by <%= post.user.name %> at <%= post.created_at.strftime("%B %d, %Y %H:%M") %>
         </div>
         <%= link_to 'Show Post', post_path(post), class: 'btn btn-primary' %>
       </div>
     </div>
   <% end %>
 </div>
-
-<%= link_to 'New Post', new_post_path, class: 'btn btn-success my-4' %>
 
 
 

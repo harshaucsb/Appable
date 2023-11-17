@@ -1,9 +1,7 @@
 class CreateUsers < ActiveRecord::Migration[6.1]
   def change
     create_table :users do |t|
-      t.string :name
-      #t.string :email
-
+      t.string :name, null:false
       t.timestamps
 
        ## Database authenticatable
@@ -34,7 +32,6 @@ class CreateUsers < ActiveRecord::Migration[6.1]
        # t.integer  :failed_attempts, default: 0, null: false # Only if lock strategy is :failed_attempts
        # t.string   :unlock_token # Only if unlock strategy is :email or :both
        # t.datetime :locked_at
- 
  
        # Uncomment below if timestamps were not included in your original model.
        # t.timestamps null: false

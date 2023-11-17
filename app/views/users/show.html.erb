@@ -1,16 +1,10 @@
-<div class="d-flex justify-content-center my-4">
-<% if user_signed_in? %>
-  <%= link_to 'Home', user_path(current_user) %>
-<% else %>
-  <%= link_to 'Home', root_path %>
-<% end %>
+<div class="d-flex justify-content-center">
+  <%= link_to 'Home', root_path, class: 'btn btn-outline-primary btn-sm me-2' %>
 </div>
 
-
-
-
-
 <div class="container mt-4">
+  <%= link_to 'All Users', users_path, class: 'btn btn-info' %>
+
   <h1>User Details</h1>
 
   <div class="card mb-4">
@@ -21,6 +15,53 @@
       <h5 class="card-title">Email: <%= @user.email %></h5>
     </div>
   </div>
+
+  <% if user_signed_in? && current_user==@user %>
+  <%= link_to 'Edit Profile', edit_user_path(@user), class: 'btn btn-outline-secondary btn-sm' %>
+  <% end %>
+  
+  <% if user_signed_in? && current_user==@user %>
+  <%= button_to 'Delete Profile', user_path(@user), method: :delete, class: 'btn btn-outline-danger btn-sm' %>
+  <% end %>
+
+  <div class="container mt-4">
+    <h2>Following</h2>
+    <div class="row">
+    <% (@user.friends).uniq.each do |friend| %>
+      <div class="col-md-4">
+        <div class="card mb-3">
+          <div class="card-body">
+            <h4 class="card-title"><%= friend.name %></h4>
+            <%= link_to 'View Profile', user_path(friend), class: 'btn btn-primary' %>
+            <%= button_to 'Unfollow', remove_friend_path, method: :delete, params: { user_id: @user.id, friend_id: friend.id }, class: 'btn btn-danger' %>
+            <%= link_to 'Send Message', new_message_path, class: 'btn btn-info' %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    </div>
+  </div>
+
+  <% if user_signed_in? && current_user==@user %>
+  <%= link_to 'Show Chats', user_messages_path(@user), class: 'btn btn-info' %>
+  <div class="container mt-4">
+    <h2>Suggestions</h2>
+    <% @other_users.each do |other_user| %>
+      <% unless @user.friends.include?(other_user) %>
+        <div class="card mb-3">
+          <div class="card-body d-flex justify-content-between align-items-center">
+            <h3 class="card-title"><%= other_user.name %></h3>
+            <div>
+              <%= button_to 'Follow', add_friend_path, method: :post, params: { user_id: @user.id, friend_id: other_user.id }, class: 'btn btn-success' %>
+              <%= link_to 'Show Profile', user_path(other_user), class: 'btn btn-primary' %>
+              <%= link_to 'Send Message', new_message_path, class: 'btn btn-info' %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+  <% end %>
 
   <h2>Posts</h2>
   <% @user.posts.each do |post| %>
@@ -33,43 +74,9 @@
     </div>
   <% end %>
 
+  <% if user_signed_in? && current_user==@user %>
   <%= link_to 'New Post', new_post_path, class: 'btn btn-primary' %>
-</div>
-
-<div class="container mt-4">
-  <h2>Current Friends</h2>
-  <div class="row">
-  <% (@user.friends).uniq.each do |friend| %>
-    <div class="col-md-4">
-      <div class="card mb-3">
-        <div class="card-body">
-          <h4 class="card-title"><%= friend.name %></h4>
-          <%= link_to 'View Profile', user_path(friend), class: 'btn btn-primary' %>
-          <%= button_to 'Unfollow', remove_friend_path, method: :delete, params: { user_id: @user.id, friend_id: friend.id }, class: 'btn btn-danger' %>
-          <%= link_to 'Send Message', new_message_path, class: 'btn btn-info' %>
-        </div>
-      </div>
-    </div>
   <% end %>
-  </div>
-</div>
 
-<%= link_to 'Show Chats', user_messages_path(@user), class: 'btn btn-info' %>
-
-<div class="container mt-4">
-  <h2>Suggested Users to Follow</h2>
-  <% @other_users.each do |other_user| %>
-    <% unless @user.friends.include?(other_user) %>
-      <div class="card mb-3">
-        <div class="card-body d-flex justify-content-between align-items-center">
-          <h3 class="card-title"><%= other_user.name %></h3>
-          <div>
-            <%= button_to 'Follow', add_friend_path, method: :post, params: { user_id: @user.id, friend_id: other_user.id }, class: 'btn btn-success' %>
-            <%= link_to 'Show Profile', user_path(other_user), class: 'btn btn-primary' %>
-          </div>
-        </div>
-      </div>
-    <% end %>
-  <% end %>
 </div>
 

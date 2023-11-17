@@ -8,7 +8,6 @@ Uses Ruby - 3.0.6
 ## Install dependencies
 
 - bundle install
-- yarn install
 
 ## Setup Database
 
