@@ -1,10 +1,5 @@
 <div class="d-flex justify-content-center my-4">
-  <% if user_signed_in? %>
-  <%= link_to 'Home', user_path(current_user) %>
-  <% else %>
-  <%= link_to 'Home', root_path %>
-  <% end %>
-
+<%= link_to 'Home', root_path, class: 'btn btn-info' %>
 </div>
 
 <!-- Heading for the new comment section -->
@@ -27,16 +22,17 @@
   </div>
 <% end %>
 
+<div class="text-center">
+  <h1><%= @post.title %></h1>
+  <p><%= @post.content %></p>
+  <p class="text-muted">Posted by <%= @post.user.name %> on <%= @post.created_at.strftime("%B %d, %Y") %></p>
+</div>
+
 <!-- Comment Form -->
 <%= form_for [@post, @comment], url: post_comments_path(@post), html: { class: 'needs-validation', novalidate: true } do |f| %>
   <div class="mb-3">
-    <%= f.label :content, class: 'form-label' %>
+    <%= f.label :Comment, class: 'form-label' %>
     <%= f.text_area :content, class: 'form-control' %>
-  </div>
-
-  <div class="mb-3">
-    <%= f.label :user_id, class: 'form-label' %>
-    <%= f.collection_select :user_id, User.all, :id, :name, { prompt: "Choose a user" }, { class: 'form-select' } %>
   </div>
 
   <div class="actions mb-3">
@@ -46,4 +42,21 @@
   <div class="actions mb-3">
     <%= link_to 'Back to Post', post_path(@post), class: 'btn btn-primary' %>
   </div>
+<% end %>
+
+<!-- Existing comments -->
+<% if @post.comments.any? %>
+  <div class="mt-4 mb-2 text-center">
+    <h2>Comments</h2>
+  </div>
+  <% @post.comments.each do |comment| %>
+    <div class="card mb-2">
+      <div class="card-body">
+        <strong>Commenter:</strong> <%= comment.user.name %>
+        <p class="card-text"><%= comment.content %></p>
+      </div>
+    </div>
+  <% end %>
+<% else %>
+  <p class="text-center">No comments yet.</p>
 <% end %>
