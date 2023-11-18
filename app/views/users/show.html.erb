@@ -34,7 +34,7 @@
             <h4 class="card-title"><%= friend.name %></h4>
             <%= link_to 'View Profile', user_path(friend), class: 'btn btn-primary' %>
             <%= button_to 'Unfollow', remove_friend_path, method: :delete, params: { user_id: @user.id, friend_id: friend.id }, class: 'btn btn-danger' %>
-            <%= link_to 'Send Message', new_message_path, class: 'btn btn-info' %>
+            <%= link_to 'Message', new_message_path(friend_id: friend.id), class: 'btn btn-info' %>
           </div>
         </div>
       </div>
