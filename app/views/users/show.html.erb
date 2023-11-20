@@ -131,11 +131,13 @@
 </head>
 <body>
   <nav class="navbar">
-    <div class="navbar-brand">Appable</div>
+    <%= link_to 'Appable', root_path, class: 'navbar-brand' %>
     <div>
-      <%# <%= link_to 'Sign out', destroy_user_session_path, method: :delete, class: 'btn btn-sm' %> 
       <%= link_to 'Home', root_path, class: 'btn btn-sm' %>
       <%= link_to 'My Profile', user_path(current_user), class: 'btn btn-sm' %>
+    </div>
+    <div>
+      <%= button_to 'Sign out', destroy_user_session_path, method: :delete, class: 'btn btn-sm' %>
     </div>
   </nav>
 
@@ -196,6 +198,11 @@
       <!-- Posts Section -->
       <div class="col-md-4">
         <h2>Posts</h2>
+        <% if user_signed_in? && current_user == @user %>
+        <div class="new-post-btn-container">
+          <%= link_to 'New Post', new_post_path, class: 'btn btn-primary' %>
+        </div>
+        <% end %>
         <% @user.posts.each do |post| %>
           <div class="card mb-3">
             <div class="card-body">
@@ -205,12 +212,6 @@
             </div>
           </div>
         <% end %>
-
-      <% if user_signed_in? && current_user == @user %>
-      <div class="new-post-btn-container">
-        <%= link_to 'New Post', new_post_path, class: 'btn btn-primary' %>
       </div>
-    <% end %>
-  </div>
 </body>
 </html>

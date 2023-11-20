@@ -86,10 +86,13 @@
 </head>
 <body>
   <nav class="navbar">
-    <div class="navbar-brand">Appable</div>
+    <%= link_to 'Appable', root_path, class: 'navbar-brand' %>
     <div>
       <%= link_to 'Home', root_path, class: 'btn btn-sm' %>
       <%= link_to 'My Profile', user_path(current_user), class: 'btn btn-sm' %>
+    </div>
+    <div>
+      <%= button_to 'Sign out', destroy_user_session_path, method: :delete, class: 'btn btn-sm' %>
     </div>
   </nav>
 

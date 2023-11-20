@@ -74,18 +74,21 @@
 <body>
   <nav class="navbar">
     <%= link_to 'Appable', root_path, class: 'navbar-brand' %>
-    <!-- Other navbar links go here -->
+    <% if user_signed_in? %>
+      <div>
+        <%= link_to 'Public Posts', posts_path, class: 'btn btn-sm' %>
+        <%= link_to 'All Users', users_path, class: 'btn btn-sm' %>
+        <%= link_to 'My Profile', user_path(current_user), class: 'btn btn-sm' %>
+      </div>
+      <div>
+        <%= button_to 'Sign out', destroy_user_session_path, method: :delete, class: 'btn btn-sm' %>
+      </div>
+    <%end%>
   </nav>
 
   <% if user_signed_in? %>
     <div class="container">
       <h1>Home Page</h1>
-      <div class="d-flex justify-content-center my-4">
-        <%= link_to 'All Posts', posts_path, class: 'btn btn-primary btn-sm me-2' %>
-        <%= link_to 'All Users', users_path, class: 'btn btn-primary btn-sm me-2' %>
-        <%= link_to 'My Profile', user_path(current_user), class: 'btn btn-primary btn-sm me-2' %>
-        <%= link_to 'Sign out', destroy_user_session_path, method: :delete, class: 'btn btn-primary btn-sm' %>
-      </div>
       <!-- Display posts for signed-in users -->
       <div class="row row-cols-1 row-cols-md-2 g-4">
         <% current_user.display_posts.each do |post| %>

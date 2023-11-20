@@ -83,10 +83,13 @@
 </head>
 <body>
   <nav class="navbar">
-    <div class="navbar-brand">Appable</div>
+    <%= link_to 'Appable', root_path, class: 'navbar-brand' %>
     <div>
       <%= link_to 'Home', root_path, class: 'btn btn-sm' %>
       <%= link_to 'My Profile', user_path(current_user), class: 'btn btn-sm' %>
+    </div>
+    <div>
+      <%= button_to 'Sign out', destroy_user_session_path, method: :delete, class: 'btn btn-sm' %>
     </div>
   </nav>
 
@@ -112,7 +115,9 @@
             <% end %>
             <td><%= user.email %></td>
             <td><%= link_to 'Show', user, class: 'btn btn-sm' %></td>
-            <td><%= link_to 'Message', new_message_path(friend_id: user.id), class: 'btn btn-sm' %></td>
+            <%if user != current_user %>
+              <td><%= link_to 'Message', new_message_path(friend_id: user.id), class: 'btn btn-sm' %></td>
+            <%end%>
             <% if user_signed_in? && current_user == user %>
               <td><%= link_to 'Edit', edit_user_path(user), class: 'btn btn-sm' %></td>
               <td>
@@ -122,7 +127,7 @@
                               data: { confirm: "Are you sure?" } %>
               </td>
             <% else %>
-                <% if %>
+                <% if not current_user.friends.include?(user) %>
               <td><%= button_to 'Follow', add_friend_path(current_user), method: :post, params: { friend_id: user.id }, class: 'btn btn-outline-primary btn-sm' %></td>
             <% else %>
               <td><%= button_to 'Unfollow', remove_friend_path(current_user), method: :delete, params: { friend_id: user.id }, class: 'btn btn-outline-danger btn-sm' %></td>
