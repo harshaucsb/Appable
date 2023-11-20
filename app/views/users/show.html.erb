@@ -126,6 +126,13 @@
       background-color: #e9ecef; /* Color to match the box around the name */
     }
 
+    .scrollable-section {
+    height: 300px; /* Set a fixed height */
+    overflow-y: auto; /* Enable vertical scrolling */
+    margin-bottom: 20px; /* Optional: adds some space below the section */
+    }
+
+
 
   </style>
 </head>
@@ -162,7 +169,7 @@
 
     <div class="row">
       <!-- Following Section -->
-      <div class="col-md-4">
+      <div class="col-md-4 scrollable-section">
         <h2>Following</h2>
         <% (@user.friends).uniq.each do |friend| %>
           <div class="card mb-3">
@@ -177,7 +184,7 @@
       </div>
 
       <!-- Suggestions Section -->
-      <div class="col-md-4">
+      <div class="col-md-4 scrollable-section">
         <h2>Suggestions</h2>
         <% @other_users.each do |other_user| %>
           <% unless @user.friends.include?(other_user) %>
@@ -196,7 +203,7 @@
       </div>
 
       <!-- Posts Section -->
-      <div class="col-md-4">
+      <div class="col-md-4 scrollable-section ">
         <h2>Posts</h2>
         <% if user_signed_in? && current_user == @user %>
         <div class="new-post-btn-container">
