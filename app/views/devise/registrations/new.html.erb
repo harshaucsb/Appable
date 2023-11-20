@@ -1,34 +1,120 @@
-<h2>Sign up</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appable - Sign Up</title>
+    <style>
+        /* CSS Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            background-color: #2d3e50;
+            padding: 1.5rem 0; /* Increased thickness */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .navbar-brand {
+            color: #fff !important;
+            text-decoration: none;
+            padding: 0 15px;
+        }
+        .container {
+            width: 95%;
+            max-width: 600px;
+            margin: auto;
+            padding-top: 50px;
+        }
+        h2 {
+            color: #2d3e50;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form-field {
+            margin-bottom: 15px;
+        }
+        .form-field label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-field input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .form-action button, .auth-link-button {
+            padding: 10px 20px;
+            background-color: #2d3e50; /* Same color as navbar */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-transform: uppercase;
+            cursor: pointer;
+            display: block;
+            text-align: center;
+            margin: 20px auto 0; /* Centers the button and adds margin on the top */
+            text-decoration: none;
+        }
+        .form-action button:hover, .auth-link-button:hover {
+            background-color: #21435c; /* Slightly darker on hover */
+        }
+        .error-messages {
+            color: red;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="navbar-brand">Appable</div>
+</nav>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
-  
-  <div class="field">
-  <%= f.label :name %><br />
-  <%= f.text_field :name, autofocus: true, autocomplete: "name" %>
-  </div>
+<div class="container">
+    <h2>Sign Up</h2>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+        <%= render "devise/shared/error_messages", resource: resource %>
 
-  <div class="field">
-    <%= f.label :password %>
-    <% if @minimum_password_length %>
-    <em>(<%= @minimum_password_length %> characters minimum)</em>
-    <% end %><br />
-    <%= f.password_field :password, autocomplete: "new-password" %>
-  </div>
+        <div class="form-field">
+            <%= f.label :name %>
+            <%= f.text_field :name, autofocus: true, autocomplete: "name" %>
+        </div>
 
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
+        <div class="form-field">
+            <%= f.label :email %>
+            <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+        </div>
 
-  <div class="actions">
-    <%= f.submit "Sign up" %>
-  </div>
-<% end %>
+        <div class="form-field">
+            <%= f.label :password %>
+            <% if @minimum_password_length %>
+                <em>(<%= @minimum_password_length %> characters minimum)</em>
+            <% end %>
+            <%= f.password_field :password, autocomplete: "new-password" %>
+        </div>
 
-<%= render "devise/shared/links" %>
+        <div class="form-field">
+            <%= f.label :password_confirmation %>
+            <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
+        </div>
+
+        <div class="form-action">
+            <%= f.submit "Sign Up" %>
+        </div>
+    <% end %>
+
+    <%# Link styled as a button %>
+    <%= link_to 'Log in', new_user_session_path, class: 'auth-link-button' %>
+
+    <%# Other devise links like "Forgot your password?" would go here %>
+</div>
+</body>
+</html>
