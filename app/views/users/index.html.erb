@@ -1,49 +1,138 @@
-<div class="d-flex justify-content-center">
-  <%= link_to 'Home', root_path, class: 'btn btn-outline-primary btn-sm me-2' %>
-  <%= link_to 'My Profile', user_path(current_user), class: 'btn btn-outline-primary btn-sm me-2' %>
-</div>
 
-<div class="container mt-4">
-  <h1>Users</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Users - Appable</title>
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding-top: 60px;
+    }
+    .navbar {
+      background-color: #2d3e50; /* Consistent navbar color */
+      color: white;
+      padding: 10px 20px;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1030;
+    }
+    .navbar a, .navbar a:visited {
+      color: white;
+      text-decoration: none;
+    }
+    .container {
+      width: 80%;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,.1);
+      margin-top: 80px;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    .table {
+      width: 100%;
+      margin-bottom: 20px;
+      border-collapse: collapse;
+    }
+    .table-hover tbody tr:hover {
+      background-color: #f2f2f2;
+    }
+    .thead-light th {
+      background-color: #e9ecef;
+      color: #333;
+    }
+    .table td, .table th {
+      padding: .75rem;
+      vertical-align: top;
+      border-top: 1px solid #dee2e6;
+    }
+    .btn, .btn-sm {
+      font-size: 1.02rem;
+      border-radius: .2rem;
+      padding: .375rem .75rem;
+      margin-right: .5rem;
+      border: none;
+      line-height: 1.5;
+      text-decoration: none;
+      color: white;
+      background-color: #2d3e50; /* Gray background for all buttons */
+      text-align: center;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .btn:hover, .btn-sm:hover {
+      background-color: #5a6268; /* Darker background on hover */
+    }
+    .btn-danger, .btn-outline-danger {
+      background-color: #dc3545; /* Darker red for 'Destroy' button */
+    }
+    .btn-danger:hover, .btn-outline-danger:hover {
+      background-color: #c82333; /* Even darker red on hover */
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-brand">Appable</div>
+    <div>
+      <%= link_to 'Home', root_path, class: 'btn btn-sm' %>
+      <%= link_to 'My Profile', user_path(current_user), class: 'btn btn-sm' %>
+    </div>
+  </nav>
 
-  <table class="table table-hover">
-    <thead class="thead-light">
-      <tr>
-        <th>Name</th>
-        <th>Email</th>
-        <th colspan="3" class="text-center">Actions</th>
-      </tr>
-    </thead>
+  <div class="container mt-4">
+    <h1>Users</h1>
 
-    <tbody>
-      <% @users.each do |user| %>
+    <table class="table table-hover">
+      <thead class="thead-light">
         <tr>
-          <% if user_signed_in? && current_user==user %>
-            <td><%= user.name.titleize + " (You)" %></td>
-          <% else %>
-            <td><%= user.name.titleize %></td>
-          <% end %>
-          <td><%= user.email %></td>
-          <td><%= link_to 'Show', user, class: 'btn btn-outline-primary btn-sm' %></td>
-          <td><%= link_to 'Message', new_message_path(friend_id: user.id), class: 'btn btn-outline-primary btn-sm' %></td>
-          <% if user_signed_in? && current_user==user %>
-            <td><%= link_to 'Edit', edit_user_path(user), class: 'btn btn-outline-secondary btn-sm' %></td>
-            <td>
-              <%= button_to 'Destroy', user_path(user), 
-                            method: :delete, 
-                            class: 'btn btn-outline-danger btn-sm',
-                            data: { turbo_confirm: "Are you sure?" } %>
-          <% else %>
-            <% if %>
+          <th>Name</th>
+          <th>Email</th>
+          <th colspan="5" class="text-center">Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @users.each do |user| %>
+          <tr>
+            <% if user_signed_in? && current_user == user %>
+              <td><%= user.name.titleize + " (You)" %></td>
+            <% else %>
+              <td><%= user.name.titleize %></td>
+            <% end %>
+            <td><%= user.email %></td>
+            <td><%= link_to 'Show', user, class: 'btn btn-sm' %></td>
+            <td><%= link_to 'Message', new_message_path(friend_id: user.id), class: 'btn btn-sm' %></td>
+            <% if user_signed_in? && current_user == user %>
+              <td><%= link_to 'Edit', edit_user_path(user), class: 'btn btn-sm' %></td>
+              <td>
+                <%= button_to 'Destroy', user_path(user), 
+                              method: :delete, 
+                              class: 'btn btn-danger btn-sm',
+                              data: { confirm: "Are you sure?" } %>
+              </td>
+            <% else %>
+                <% if %>
               <td><%= button_to 'Follow', add_friend_path(current_user), method: :post, params: { friend_id: user.id }, class: 'btn btn-outline-primary btn-sm' %></td>
             <% else %>
               <td><%= button_to 'Unfollow', remove_friend_path(current_user), method: :delete, params: { friend_id: user.id }, class: 'btn btn-outline-danger btn-sm' %></td>
             <% end %>
           <% end %>
           </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-</div>
-
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

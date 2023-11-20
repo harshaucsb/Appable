@@ -1,37 +1,144 @@
-<div class="d-flex justify-content-center">
-  <%= link_to 'Home', root_path, class: 'btn btn-outline-primary btn-sm me-2' %>
-  <%= link_to 'My Profile', user_path(current_user), class: 'btn btn-outline-primary btn-sm me-2' %>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Post - Appable</title>
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding-top: 60px; /* Offset for fixed navbar */
+    }
+    .navbar {
+      background-color: #2d3e50; /* Dark blue background */
+      color: white;
+      padding: 10px 20px;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1030;
+    }
+    .navbar a, .navbar a:visited, .navbar a:hover {
+      color: white;
+      text-decoration: none;
+      background-color: #2d3e50; /* Gray background for all buttons */
+      padding: 0.375rem 0.75rem;
+      border-radius: 0.2rem;
+      margin-right: 0.5rem;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .navbar a:hover {
+      background-color: #5a6268; /* Darker background on hover */
+    }
+    .container {
+      width: 50%;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,.1);
+      margin-top: 80px; /* Push down to clear fixed navbar */
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    .btn, .btn-sm {
+      font-size: 1.02rem;
+      border-radius: .2rem;
+      padding: .375rem .75rem;
+      margin-right: .5rem;
+      border: none;
+      line-height: 1.5;
+      text-decoration: none;
+      color: white;
+      background-color: #2d3e50; /* Match navbar button color */
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .btn:hover, .btn-sm:hover {
+      background-color: #5a6268; /* Darker background on hover */
+    }
+    .btn-outline-secondary {
+      color: #6c757d;
+      background-color: transparent;
+      border-color: #6c757d;
+    }
+    .btn-outline-secondary:hover {
+      color: white;
+      background-color: #6c757d;
+    }
+    .form-control {
+      display: block;
+      width: 100%;
+      padding: 0.375rem 0.75rem;
+      font-size: 1rem;
+      line-height: 1.5;
+      color: #495057;
+      background-color: #fff;
+      background-clip: padding-box;
+      border: 1px solid #ced4da;
+      border-radius: 0.25rem;
+      transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+    .alert-danger {
+      color: #721c24;
+      background-color: #f8d7da;
+      border-color: #f5c6cb;
+    }
+    .alert {
+      padding: 0.75rem 1.25rem;
+      margin-bottom: 1rem;
+      border: 1px solid transparent;
+      border-radius: 0.25rem;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-brand">Appable</div>
+    <div>
+      <%= link_to 'Home', root_path, class: 'btn btn-sm' %>
+      <%= link_to 'My Profile', user_path(current_user), class: 'btn btn-sm' %>
+    </div>
+  </nav>
 
-<h1 class="mb-4">Edit Post</h1>
+  <div class="container my-5">
+    <h1 class="mb-4">Edit Post</h1>
 
-<%= form_for @post, html: { class: 'needs-validation', novalidate: true } do |f| %>
-    <% if @post.errors.any? %>
+    <%= form_for @post, html: { class: 'needs-validation', novalidate: true } do |f| %>
+      <% if @post.errors.any? %>
         <div id="error_explanation" class="alert alert-danger">
-            <h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
-            <ul>
+          <h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
+          <ul>
             <% @post.errors.full_messages.each do |message| %>
-                <li><%= message %></li>
+              <li><%= message %></li>
             <% end %>
-            </ul>
+          </ul>
         </div>
-    <% end %>
+      <% end %>
 
-    <div class="field mb-3">
+      <div class="field mb-3">
         <%= f.label :title, class: 'form-label' %>
         <%= f.text_area :title, class: 'form-control', rows: 3 %>
-    </div>
+      </div>
 
-    <div class="field mb-3">
+      <div class="field mb-3">
         <%= f.label :content, class: 'form-label' %>
         <%= f.text_area :content, class: 'form-control', rows: 6 %>
-    </div>
+      </div>
 
-    <div class="actions">
+      <div class="actions text-center">
         <%= f.submit 'Save Changes', class: 'btn btn-primary' %>
-    </div>
+      </div>
 
-    <div class="mt-3">
+      <div class="mt-3 text-center">
         <%= link_to 'Back', post_path(@post), class: 'btn btn-outline-secondary' %>
-    </div>
-<% end %>
+      </div>
+    <% end %>
+  </div>
+</body>
+</html>

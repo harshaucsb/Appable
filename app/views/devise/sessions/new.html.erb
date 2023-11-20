@@ -1,26 +1,127 @@
-<h2>Log in</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appable - Log In</title>
+    <style>
+        /* CSS Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            background-color: #2d3e50;
+            padding: 1.5rem 0;
+        }
+        .navbar-brand {
+            color: #fff;
+            text-decoration: none;
+            padding: 0 15px;
+        }
+        .container {
+            width: 95%;
+            max-width: 600px;
+            margin: 50px auto;
+        }
+        h2 {
+            color: #2d3e50;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form-field {
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .form-field input[type="email"], .form-field input[type="password"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            border: none;
+            border-bottom: 1px solid #ccc;
+            margin-bottom: 15px;
+        }
+        .form-action {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .form-action button {
+            padding: 10px 20px;
+            background-color: #007bff; /* Blue background like Sign Up */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-transform: uppercase;
+            cursor: pointer;
+            text-align: center;
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+            text-decoration: none;
+        }
+        .form-action button:hover {
+            background-color: #0056b3;
+        }
+        .auth-links {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .auth-link-button, .auth-link-button:hover {
+            background-color: #2d3e50; /* Match navbar color */
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+            width: auto;
+            margin: 10px auto;
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-transform: uppercase;
+        }
+        /* Hover effect for auth link buttons */
+        .auth-link-button:hover {
+            background-color: #21435c;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="navbar-brand">Appable</div>
+</nav>
 
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
+<div class="container">
+    <h2>Log In</h2>
 
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "current-password" %>
-  </div>
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+        <%= render "devise/shared/error_messages", resource: resource %>
 
-  <% if devise_mapping.rememberable? %>
-    <div class="field">
-      <%= f.check_box :remember_me %>
-      <%= f.label :remember_me %>
+        <div class="form-field">
+            <%= f.label :email %>
+            <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+        </div>
+
+        <div class="form-field">
+            <%= f.label :password %>
+            <%= f.password_field :password, autocomplete: "current-password" %>
+        </div>
+
+        <% if devise_mapping.rememberable? %>
+            <div class="field">
+                <%= f.check_box :remember_me %>
+                <%= f.label :remember_me %>
+            </div>
+        <% end %>
+
+        <div class="form-action">
+            <%= f.submit "Log In" %>
+        </div>
+    <% end %>
+
+    <div class="auth-links">
+        <%= link_to 'Sign Up', new_registration_path(resource_name), class: 'auth-link-button' %>
+        <%= link_to 'Forgot your Password?', new_password_path(resource_name), class: 'auth-link-button' %>
     </div>
-  <% end %>
-
-  <div class="actions">
-    <%= f.submit "Log in" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+</div>
+</body>
+</html>

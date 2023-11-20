@@ -1,38 +1,139 @@
 <!-- app/views/users/edit.html.erb -->
 
-<div class="d-flex justify-content-center">
-  <%= link_to 'Home', root_path, class: 'btn btn-outline-primary btn-sm me-2' %>
-  <%= link_to 'My Profile', user_path(current_user), class: 'btn btn-outline-primary btn-sm me-2' %>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit User - Appable</title>
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <style>
+    /* The styles here are derived from your reference code for the Users list page */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding-top: 60px; /* Navbar height offset */
+    }
+    .navbar {
+      background-color: #2d3e50; /* Dark blue background */
+      color: white;
+      padding: 10px 20px;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1030;
+    }
+    .navbar a, .navbar a:visited, .navbar a:hover {
+      color: white;
+      text-decoration: none;
+      background-color: #2d3e50; /* Gray background for all buttons */
+      padding: 0.375rem 0.75rem;
+      border-radius: 0.2rem;
+      margin-right: 0.5rem;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .navbar a:hover {
+      background-color: #5a6268; /* Darker background on hover */
+    }
+    .container {
+      width: 50%;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,.1);
+      margin-top: 80px; /* Push down to clear fixed navbar */
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    .btn, .btn-sm {
+      font-size: 1.02rem;
+      border-radius: .2rem;
+      padding: .375rem .75rem;
+      margin-right: .5rem;
+      border: none;
+      line-height: 1.5;
+      text-decoration: none;
+      color: white;
+      background-color: #2d3e50; /* Match navbar button color */
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .btn:hover, .btn-sm:hover {
+      background-color: #5a6268; /* Darker background on hover */
+    }
+    .btn-danger, .btn-outline-danger {
+      background-color: #dc3545; /* Darker red for 'Destroy' button */
+    }
+    .btn-danger:hover, .btn-outline-danger:hover {
+      background-color: #c82333; /* Even darker red on hover */
+    }
+    .actions {
+      text-align: center; /* Center align buttons */
+    }
+    /* Additional styles */
+    .form-control {
+      display: block;
+      width: 100%;
+      padding: 0.375rem 0.75rem;
+      font-size: 1rem;
+      line-height: 1.5;
+      color: #495057;
+      background-color: #fff;
+      background-clip: padding-box;
+      border: 1px solid #ced4da;
+      border-radius: 0.25rem;
+      transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+    .needs-validation {
+      max-width: 500px; /* Adjust the width of form as necessary */
+      margin: 0 auto; /* Center form in the page */
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-brand">Appable</div>
+    <div>
+      <%# <%= link_to 'Sign out', destroy_user_session_path, method: :delete, class: 'btn btn-sm' >  %>
+      <%= link_to 'Home', root_path, class: 'btn btn-sm' %>
+      <%= link_to 'My Profile', user_path(current_user), class: 'btn btn-sm' %>
+    </div>
+  </nav>
 
-<div class="container my-5">
-  <h1>Edit User</h1>
+  <div class="container my-5">
+    <h1>Edit User</h1>
 
-  <%= form_with model: @user, local: true, class: 'needs-validation', novalidate: true do |form| %>
-    <% if @user.errors.any? %>
-      <div id="error_explanation" class="alert alert-warning" role="alert">
-        <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+    <%= form_with model: @user, local: true, class: 'needs-validation', novalidate: true do |form| %>
+      <% if @user.errors.any? %>
+        <div id="error_explanation" class="alert alert-warning" role="alert">
+          <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+          <ul>
+          <% @user.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+          </ul>
+        </div>
+      <% end %>
 
-        <ul>
-        <% @user.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-        </ul>
+      <div class="field mb-3">
+        <%= form.label :name, class: 'form-label' %>
+        <%= form.text_field :name, class: 'form-control' %>
+      </div>
+
+      <div class="actions">
+        <%= form.submit 'Save Changes', class: 'btn btn-primary' %>
       </div>
     <% end %>
 
-    <div class="field mb-3">
-      <%= form.label :name, class: 'form-label' %>
-      <%= form.text_field :name, class: 'form-control' %>
+    <div class="mt-3">
+      <%= link_to 'Show', @user, class: 'btn btn-outline-primary me-2' %> 
+      <%= link_to 'Back', users_path, class: 'btn btn-outline-secondary' %>
     </div>
-
-    <div class="actions">
-      <%= form.submit 'Save Changes', class: 'btn btn-primary' %>
-    </div>
-  <% end %>
-
-  <div class="mt-3">
-    <%= link_to 'Show', @user, class: 'btn btn-outline-primary me-2' %> 
-    <%= link_to 'Back', users_path, class: 'btn btn-outline-secondary' %>
   </div>
-</div>
+</body>
+</html>
