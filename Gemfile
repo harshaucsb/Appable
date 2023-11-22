@@ -1,14 +1,14 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.0.6'
+ruby '3.2.2'
 
 #Adding gem for visualization:
 gem 'bootstrap', '~> 5.1.3'
 
 gem 'devise'
 
-gem 'pg', "~> 1.1.0"
+gem 'pg'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
 gem 'rails', '~> 7.1.1'
