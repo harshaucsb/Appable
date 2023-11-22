@@ -1,82 +1,224 @@
-<div class="d-flex justify-content-center">
-  <%= link_to 'Home', root_path, class: 'btn btn-outline-primary btn-sm me-2' %>
-</div>
+<!-- app/views/users/show.html.erb -->
 
-<div class="container mt-4">
-  <%= link_to 'All Users', users_path, class: 'btn btn-info' %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Details - Appable</title>
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <style>
+    /* Styles from the Edit User page are applied here for consistency */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding-top: 60px; /* Navbar height offset */
+    }
+    .navbar {
+      background-color: #2d3e50; /* Dark blue background */
+      color: white;
+      padding: 10px 20px;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1030;
+    }
+    .navbar a, .navbar a:visited, .navbar a:hover {
+      color: white;
+      text-decoration: none;
+      background-color: #2d3e50; /* Gray background for all buttons */
+      padding: 0.375rem 0.75rem;
+      border-radius: 0.2rem;
+      margin-right: 0.5rem;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .navbar a:hover {
+      background-color: #5a6268; /* Darker background on hover */
+    }
+    .container {
+      width: 80%; /* Adjusted width for a narrower container */
+      margin: 100px auto 0; /* Top margin adjusted to clear the fixed navbar, centered horizontally */
+      background: white;
+      padding: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,.1);
+    }
+    h1, h2 {
+      text-align: center;
+      color: #333;
+    }
+    .btn, .btn-sm, .btn-info, .btn-danger, .btn-outline-secondary, .btn-outline-primary {
+      font-size: 1rem;
+      border-radius: .2rem;
+      padding: .375rem .75rem;
+      margin: 0.25rem;
+      border: none;
+      line-height: 1.5;
+      text-decoration: none;
+      color: white;
+      background-color: #2d3e50; /* Consistent button color */
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .btn:hover, .btn-sm:hover, .btn-info:hover, .btn-danger:hover, .btn-outline-secondary:hover, .btn-outline-primary:hover {
+      background-color: #5a6268; /* Consistent hover color */
+    }
+  .btn-outline-danger {
+  background-color: #dc3545; /* Dark red background */
+  color: white; /* White text */
+  border: 1px solid #dc3545; /* Border color matches the background */
+}
 
-  <h1>User Details</h1>
+.btn-outline-danger:hover {
+  background-color: #c82333; /* Even darker red on hover */
+  color: white; /* Text color remains white on hover */
+}
+    .btn-outline-primary, .btn-outline-secondary {
+      color: #2d3e50;
+      background-color: transparent;
+      border: 1px solid #2d3e50;
+    }
+    .btn-outline-primary:hover, .btn-outline-secondary:hover {
+      color: white;
+      background-color: #2d3e50;
+    }
+    .card {
+      margin-bottom: 1rem;
+      border: none;
+      border-radius: .25rem;
+      box-shadow: 0 1px 1px rgba(0,0,0,.05);
+    }
+    .card-header {
+      background-color: #f8f9fa;
+      border-bottom: 1px solid rgba(0,0,0,.125);
+      padding: .75rem 1.25rem;
+      border-top-left-radius: .25rem;
+      border-top-right-radius: .25rem;
+    }
+    .card-body {
+      padding: 1.25rem;
+      border: 2px solid #f0f2f5; /* Example of a thicker, darker border */
+      
+    }
+    .card-title {
+      margin-bottom: .75rem;
+      
+    }
 
-  <div class="card mb-4">
-    <div class="card-header">
-      <h2><%= @user.name %></h2>
+        /* Style adjustments for buttons */
+    .btn-outline-secondary {
+      background-color: #2d3e50; /* Same color as other buttons */
+      color: white; /* White text color */
+    }
+    .btn-outline-secondary:hover {
+      background-color: #5a6268; /* Darker background on hover */
+    }
+
+    /* Centering the New Post button */
+    .new-post-btn-container {
+      text-align: center; /* Aligns button to center */
+      margin-top: 20px; /* Adds some space above the button */
+    }
+
+    /* Adjusting card header background color */
+    .card-header {
+      background-color: #e9ecef; /* Color to match the box around the name */
+    }
+
+    .scrollable-section {
+    height: 300px; /* Set a fixed height */
+    overflow-y: auto; /* Enable vertical scrolling */
+    margin-bottom: 20px; /* Optional: adds some space below the section */
+    }
+
+
+
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <%= link_to 'Appable', root_path, class: 'navbar-brand' %>
+    <div>
+      <%= link_to 'Home', root_path, class: 'btn btn-sm' %>
+      <%= link_to 'My Profile', user_path(current_user), class: 'btn btn-sm' %>
     </div>
-    <div class="card-body">
-      <h5 class="card-title">Email: <%= @user.email %></h5>
+    <div>
+      <%= button_to 'Sign out', destroy_user_session_path, method: :delete, class: 'btn btn-sm' %>
     </div>
+  </nav>
+
+  <div class="container my-5">
+    <h1>User Details</h1>
+
+    <div class="card mb-4">
+  <div class="card-header">
+    <h2><%= @user.name %></h2>
   </div>
-
-  <% if user_signed_in? && current_user==@user %>
-  <%= link_to 'Edit Profile', edit_user_path(@user), class: 'btn btn-outline-secondary btn-sm' %>
-  <% end %>
-  
-  <% if user_signed_in? && current_user==@user %>
-  <%= button_to 'Delete Profile', user_path(@user), method: :delete, class: 'btn btn-outline-danger btn-sm' %>
-  <% end %>
-
-  <div class="container mt-4">
-    <h2>Following</h2>
-    <div class="row">
-    <% (@user.friends).uniq.each do |friend| %>
-      <div class="col-md-4">
-        <div class="card mb-3">
-          <div class="card-body">
-            <h4 class="card-title"><%= friend.name %></h4>
-            <%= link_to 'View Profile', user_path(friend), class: 'btn btn-primary' %>
-            <%= button_to 'Unfollow', remove_friend_path, method: :delete, params: { user_id: @user.id, friend_id: friend.id }, class: 'btn btn-danger' %>
-            <%= link_to 'Message', new_message_path(friend_id: friend.id), class: 'btn btn-info' %>
-          </div>
-        </div>
+  <div class="card-body d-flex justify-content-between align-items-center">
+    <h5 class="card-title">Email: <%= @user.email %></h5>
+    <% if user_signed_in? && current_user == @user %>
+      <div>
+        <%= link_to 'Edit Profile', edit_user_path(@user), class: 'btn btn-sm btn-outline-secondary' %>
+        <%= button_to 'Delete Profile', user_path(@user), method: :delete, class: 'btn btn-sm btn-outline-danger' %>
       </div>
     <% end %>
-    </div>
   </div>
+</div>
+  
 
-  <% if user_signed_in? && current_user==@user %>
-  <%= link_to 'Show Chats', user_messages_path(@user), class: 'btn btn-info' %>
-  <div class="container mt-4">
-    <h2>Suggestions</h2>
-    <% @other_users.each do |other_user| %>
-      <% unless @user.friends.include?(other_user) %>
-        <div class="card mb-3">
-          <div class="card-body d-flex justify-content-between align-items-center">
-            <h3 class="card-title"><%= other_user.name %></h3>
-            <div>
-              <%= button_to 'Follow', add_friend_path, method: :post, params: { user_id: @user.id, friend_id: other_user.id }, class: 'btn btn-success' %>
-              <%= link_to 'Profile', user_path(other_user), class: 'btn btn-primary' %>
-              <%= link_to 'Message', new_message_path(friend_id: other_user.id), class: 'btn btn-info' %>
+    <div class="row">
+      <!-- Following Section -->
+      <div class="col-md-4 scrollable-section">
+        <h2>Following</h2>
+        <% (@user.friends).uniq.each do |friend| %>
+          <div class="card mb-3">
+            <div class="card-body">
+              <h4 class="card-title"><%= friend.name %></h4>
+              <%= link_to 'View Profile', user_path(friend), class: 'btn btn-primary' %>
+              <%= button_to 'Unfollow', remove_friend_path, method: :delete, params: { user_id: @user.id, friend_id: friend.id }, class: 'btn btn-danger' %>
+              <%= link_to 'Message', new_message_path(friend_id: friend.id), class: 'btn btn-info' %>
             </div>
           </div>
-        </div>
-      <% end %>
-    <% end %>
-  </div>
-  <% end %>
-
-  <h2>Posts</h2>
-  <% @user.posts.each do |post| %>
-    <div class="card mb-3">
-      <div class="card-body">
-        <h3 class="card-title"><%= post.title %></h3>
-        <p class="card-text"><%= post.content %></p>
-        <%= link_to 'Show Post', post_path(post), class: 'btn btn-secondary' %>
+        <% end %>
       </div>
-    </div>
-  <% end %>
 
-  <% if user_signed_in? && current_user==@user %>
-  <%= link_to 'New Post', new_post_path, class: 'btn btn-primary' %>
-  <% end %>
+      <!-- Suggestions Section -->
+      <div class="col-md-4 scrollable-section">
+        <h2>Suggestions</h2>
+        <% @other_users.each do |other_user| %>
+          <% unless @user.friends.include?(other_user) %>
+            <div class="card mb-3">
+              <div class="card-body d-flex justify-content-between align-items-center">
+                <h3 class="card-title"><%= other_user.name %></h3>
+                <div>
+                  <%= button_to 'Follow', add_friend_path, method: :post, params: { user_id: @user.id, friend_id: other_user.id }, class: 'btn btn-success' %>
+                  <%= link_to 'Profile', user_path(other_user), class: 'btn btn-primary' %>
+                  <%= link_to 'Message', new_message_path(friend_id: other_user.id), class: 'btn btn-info' %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
 
-</div>
-
+      <!-- Posts Section -->
+      <div class="col-md-4 scrollable-section ">
+        <h2>Posts</h2>
+        <% if user_signed_in? && current_user == @user %>
+        <div class="new-post-btn-container">
+          <%= link_to 'New Post', new_post_path, class: 'btn btn-primary' %>
+        </div>
+        <% end %>
+        <% @user.posts.each do |post| %>
+          <div class="card mb-3">
+            <div class="card-body">
+              <h3 class="card-title"><%= post.title %></h3>
+              <p class="card-text"><%= post.content %></p>
+              <%= link_to 'Show Post', post_path(post), class: 'btn btn-secondary' %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+</body>
+</html>

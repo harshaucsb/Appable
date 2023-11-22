@@ -1,44 +1,121 @@
-<div class="d-flex justify-content-center my-4">
-  <% if user_signed_in? %>
-  <h1>Curated Home Page</h1>
-  <% else %>
-  <h1>Welcome to Appable!!!!</h1>
-  <% end %>
-
-</div>
-
-
-<div class="container mt-4">
-  <tbody>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Appable - Chill, Chat, Connect</title>
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <style>
+    body {
+      background-color: #f8f9fa;
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding-top: 60px; /* Offset for fixed navbar */
+    }
+    .navbar {
+      background-color: #2d3e50; /* Dark blue background for navbar */
+      color: white;
+      padding: 10px 20px;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1030;
+    }
+    .navbar a, .navbar a:visited {
+      color: white;
+      padding: 0 15px;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .container {
+      width: 80%;
+      margin: 0 auto;
+      padding: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,.1);
+    }
+    .welcome-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: calc(100vh - 60px); /* Full viewport height minus navbar height */
+      text-align: center;
+    }
+    .tagline {
+      margin-top: 20px; /* Space below the main title */
+      font-size: 24px;
+      color: #2d3e50;
+      font-style: italic;
+    }
+    .button-container {
+      margin-top: 30px; /* Space below the tagline */
+    }
+    .btn {
+      background-color: #2d3e50; /* Button color matches navbar */
+      color: white; /* Text color for buttons */
+      border: none;
+      padding: 10px 20px;
+      margin: 5px;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: background-color 0.3s ease;
+    }
+    .btn:hover {
+      background-color: #0056b3; /* Darker blue on hover */
+      color: white;
+    }
+    h1 {
+      color: #2d3e50; /* Dark blue color for the main title */
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <%= link_to 'Appable', root_path, class: 'navbar-brand' %>
     <% if user_signed_in? %>
-    <div class="d-flex justify-content-center">
-      <%= link_to 'All Posts', posts_path, class: 'btn btn-outline-primary btn-sm me-2' %>
-      <%= link_to 'All Users', users_path, class: 'btn btn-outline-primary btn-sm me-2' %>
-      <%= link_to 'My Profile', user_path(current_user), class: 'btn btn-outline-primary btn-sm me-2' %>
-    </div>
-    <div class="row row-cols-1 row-cols-md-2 g-4">
-      <% current_user.display_posts.each do |post| %>
-        <div class="col">
-          <div class="card h-100">
-            <div class="card-body">
-              <h2 class="card-title"><%= post.title %></h2>
-              <p class="card-text"><%= truncate(post.content, length: 250) %></p>
+      <div>
+        <%= link_to 'Public Posts', posts_path, class: 'btn btn-sm' %>
+        <%= link_to 'All Users', users_path, class: 'btn btn-sm' %>
+        <%= link_to 'My Profile', user_path(current_user), class: 'btn btn-sm' %>
+      </div>
+      <div>
+        <%= button_to 'Sign out', destroy_user_session_path, method: :delete, class: 'btn btn-sm' %>
+      </div>
+    <%end%>
+  </nav>
+
+  <% if user_signed_in? %>
+    <div class="container">
+      <h1>Home Page</h1>
+      <!-- Display posts for signed-in users -->
+      <div class="row row-cols-1 row-cols-md-2 g-4">
+        <% current_user.display_posts.each do |post| %>
+          <div class="col">
+            <div class="card h-100">
+              <div class="card-body">
+                <h2 class="card-title"><%= post.title %></h2>
+                <p class="card-text"><%= truncate(post.content, length: 250) %></p>
+              </div>
+              <div class="card-footer text-muted">
+                Posted by <%= post.user.name %> at <%= post.created_at.strftime("%B %d, %Y %H:%M") %>
+              </div>
+              <%= link_to 'Show Post', post_path(post), class: 'btn btn-primary' %>
             </div>
-            <div class="card-footer text-muted">
-              Posted by <%= post.user.name %> at <%= post.created_at.strftime("%B %d, %Y %H:%M") %>
-            </div>
-            <%= link_to 'Show Post', post_path(post), class: 'btn btn-primary' %>
           </div>
-        </div>
-      <% end %>
+        <% end %>
+      </div>
     </div>
-    <%link_to 'Sign out', destroy_user_session_path, method: :delete%>
-    <% else %>
-      <%= link_to 'Sign up', new_user_registration_path %>
-      <%= link_to 'Login', new_user_session_path %>
-    <% end %>
-  </tbody>
-</div>
-
-
-
+  <% else %>
+    <div class="welcome-container">
+      <h1>Welcome to Appable</h1>
+      <p class="tagline">Chill, Chat, Connect</p>
+      <div class="button-container">
+        <%= link_to 'Sign up', new_user_registration_path, class: 'btn' %>
+        <%= link_to 'Login', new_user_session_path, class: 'btn' %>
+      </div>
+    </div>
+  <% end %>
+</body>
+</html>
