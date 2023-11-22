@@ -129,25 +129,6 @@
       <p class="text-center">No comments yet.</p>
     <% end %>
 
-    <div class="text-center mt-3">
-      <%= link_to 'Add Comment', new_post_comment_path(@post), class: "btn btn-primary btn-sm", role: "button" %>
-    </div>
-
-    <% if @post.comments.any? %>
-      <div class="mt-4 mb-2 text-center">
-        <h2>Comments</h2>
-      </div>
-      <% @post.comments.each do |comment| %>
-        <div class="card mb-2">
-          <div class="card-body">
-            <strong>Commenter:</strong> <%= comment.user.name %>
-            <p class="card-text"><%= comment.content %></p>
-          </div>
-        </div>
-      <% end %>
-    <% else %>
-      <p class="text-center">No comments yet.</p>
-    <% end %>
   </div>
 </body>
 </html>

@@ -187,27 +187,28 @@
         <%= form.submit 'Send Message', class: 'btn btn-primary' %>
       </div>
     <% end %>
-    
+
     <div class="messages-section">
-    <h2>Conversation</h2>
-    <% current_user.display_messages_with_a_user(@other_user).each do |message| %>
-      <div class="message-container">
-        <% if message[:sender] == current_user %>
-          <div class="sent-message">
-            <%= message[:content] %>
-            <div class="message-timestamp">
-              <%= message[:created_at] %>
+      <h2>Conversation</h2>
+      <% current_user.display_messages_with_a_user(@other_user).each do |message| %>
+        <div class="message-container">
+          <% if message[:sender] == current_user %>
+            <div class="sent-message">
+              <%= message[:content] %>
+              <div class="message-timestamp">
+                <%= message[:created_at] %>
+              </div>
             </div>
-          </div>
-        <% else %>
-          <div class="received-message">
-            <%= message[:content] %>
-            <div class="message-timestamp">
-              <%= message[:created_at] %>
+          <% else %>
+            <div class="received-message">
+              <%= message[:content] %>
+              <div class="message-timestamp">
+                <%= message[:created_at] %>
+              </div>
             </div>
-          </div>
-        <% end %>
-      </div>
+          <% end %>
+        </div>
+      <% end %>
     </div>
   </div>
 </body>
