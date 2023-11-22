@@ -1,16 +1,223 @@
+<<<<<<< Updated upstream
 <div class="d-flex justify-content-center">
   <%= link_to 'Home', root_path, class: 'btn btn-outline-primary btn-sm me-2' %>
   <%= link_to 'My Profile', user_path(current_user), class: 'btn btn-outline-primary btn-sm me-2' %>
 </div>
+=======
+<!DOCTYPE html>
+<html lang="en">
+<script type="text/javascript">
+  setTimeout(function(){
+    // Check if the content text area is empty
+    var contentBox = document.querySelector('textarea[name="message[content]"]');
+    if (!contentBox || contentBox.value.trim() === '') {
+      window.location.reload();
+    }
+  }, 5000); // 5000 milliseconds equals 5 seconds
+</script>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat - Appable</title>
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <style>
+    /* The styles here are derived from your reference code for the Users list page */
+    /* Style for message container */
+    .message-container {
+      display: flex;
+      margin-bottom: 10px; /* Adjust spacing between messages as needed */
+    }
+  
+    /* Style for sent messages */
+    .sent-message {
+      background-color: #AFE1AF; /* Green background for sent messages */
+      color: white;
+      border-radius: 10px;
+      padding: 10px; /* Adjust padding as needed */
+      margin-left: auto; /* Push sent messages to the right */
+      text-align: right; /* Right-align sent messages text */
+      font-weight: bold; /* Make the text bold */
+    }
+  
+    /* Style for received messages */
+    .received-message {
+      background-color: #66B3FF; /* Blue background for received messages */
+      color: white;
+      border-radius: 10px;
+      padding: 10px; /* Adjust padding as needed */
+      margin-right: auto; /* Push received messages to the left */
+      text-align: left; /* Left-align received messages text */
+      font-weight: bold; /* Make the text bold */
+    }
+  
+    /* Style for the timestamp */
+    .message-timestamp {
+      font-size: 12px;
+      color: white /* Change the color to a brighter shade of blue (you can choose your desired color) */
+      margin-top: 5px; /* Adjust spacing between message and timestamp */
+    }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding-top: 60px; /* Navbar height offset */
+    }
+    .navbar {
+      background-color: #2d3e50; /* Dark blue background */
+      color: white;
+      padding: 10px 20px;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1030;
+    }
+    .navbar a, .navbar a:visited, .navbar a:hover {
+      color: white;
+      text-decoration: none;
+      background-color: #2d3e50; /* Gray background for all buttons */
+      padding: 0.375rem 0.75rem;
+      border-radius: 0.2rem;
+      margin-right: 0.5rem;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .navbar a:hover {
+      background-color: #5a6268; /* Darker background on hover */
+    }
+    .container {
+      width: 50%;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,.1);
+      margin-top: 80px; /* Push down to clear fixed navbar */
+    }
+    h1, h2, h3 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    .btn, .btn-sm {
+      font-size: 1.02rem;
+      border-radius: .2rem;
+      padding: .375rem .75rem;
+      margin-right: .5rem;
+      border: none;
+      line-height: 1.5;
+      text-decoration: none;
+      color: white;
+      background-color: #2d3e50; /* Match navbar button color */
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .btn:hover, .btn-sm:hover {
+      background-color: #5a6268; /* Darker background on hover */
+    }
+    .btn-danger, .btn-outline-danger {
+      background-color: #dc3545; /* Darker red for 'Destroy' button */
+    }
+    .btn-danger:hover, .btn-outline-danger:hover {
+      background-color: #c82333; /* Even darker red on hover */
+    }
+    .actions {
+      text-align: center; /* Center align buttons */
+    }
+    /* Additional styles */
+    .form-control {
+      display: block;
+      width: 100%;
+      padding: 0.375rem 0.75rem;
+      font-size: 1rem;
+      line-height: 1.5;
+      color: #495057;
+      background-color: #fff;
+      background-clip: padding-box;
+      border: 1px solid #ced4da;
+      border-radius: 0.25rem;
+      transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+    .needs-validation {
+      max-width: 500px; /* Adjust the width of form as necessary */
+      margin: 0 auto; /* Center form in the page */
+    }
+    .card {
+      margin-bottom: 1rem;
+      border: none;
+      border-radius: .25rem;
+      box-shadow: 0 1px 1px rgba(0,0,0,.05);
+    }
+    .card-header, .card-body {
+      padding: 1.25rem;
+    }
+    .card-header {
+      background-color: #e9ecef;
+      border-bottom: 1px solid rgba(0,0,0,.125);
+    }
+    .card-text {
+      margin-bottom: .75rem;
+    }
+    .blockquote-footer {
+      display: block;
+      font-size: 80%;
+      color: #6c757d;
+    }
+    .messages-section {
+      margin-bottom: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <%= link_to 'Appable', root_path, class: 'navbar-brand' %>
+    <div>
+      <%= link_to 'Home', root_path, class: 'btn btn-sm' %>
+      <%= link_to 'My Profile', user_path(current_user), class: 'btn btn-sm' %>
+    </div>
+    <div>
+      <%= button_to 'Sign out', destroy_user_session_path, method: :delete, class: 'btn btn-sm' %>
+    </div>
+  </nav>
+>>>>>>> Stashed changes
 
 <h1 class="mb-4">New Message</h1>
 
 <%= form_with(model: @message, local: true) do |form| %>
   <!-- ... other form fields ... -->
 
+<<<<<<< Updated upstream
   <div class="field">
     <%= form.label :content %>
     <%= form.text_area :content %>
+=======
+      <%= form.hidden_field :receiver_id, value: @other_user.id %>
+
+      <div class="actions">
+        <%= form.submit 'Send Message', class: 'btn btn-primary' %>
+      </div>
+    <% end %>
+
+  <div class="messages-section">
+    <h2>Conversation</h2>
+    <% current_user.display_messages_with_a_user(@other_user).each do |message| %>
+      <div class="message-container">
+        <% if message[:sender] == current_user %>
+          <div class="sent-message">
+            <%= message[:content] %>
+            <div class="message-timestamp">
+              <%= message[:created_at] %>
+            </div>
+          </div>
+        <% else %>
+          <div class="received-message">
+            <%= message[:content] %>
+            <div class="message-timestamp">
+              <%= message[:created_at] %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+>>>>>>> Stashed changes
   </div>
 
   <%= form.hidden_field :receiver_id, value: @other_user.id %>

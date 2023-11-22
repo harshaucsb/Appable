@@ -13,7 +13,6 @@ class MessagesController < ApplicationController
       if @message.save
         flash[:success] = 'Message sent successfully.'
         # redirect_to messages_path(user_id: current_user.id)
-        puts @message.receiver_id
         redirect_to new_message_path(friend_id: @message.receiver_id)
       else
         flash.now[:error] = @message.errors.full_messages.to_sentence
