@@ -1,5 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+<script type="text/javascript">
+  setTimeout(function(){
+    // Check if the content text area is empty
+    var contentBox = document.querySelector('textarea[name="message[content]"]');
+    if (!contentBox || contentBox.value.trim() === '') {
+      window.location.reload();
+    }
+  }, 5000); // 5000 milliseconds equals 5 seconds
+</script>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +16,40 @@
   <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
   <style>
     /* The styles here are derived from your reference code for the Users list page */
+    /* Style for message container */
+    .message-container {
+      display: flex;
+      margin-bottom: 10px; /* Adjust spacing between messages as needed */
+    }
+  
+    /* Style for sent messages */
+    .sent-message {
+      background-color: #AFE1AF; /* Green background for sent messages */
+      color: white;
+      border-radius: 10px;
+      padding: 10px; /* Adjust padding as needed */
+      margin-left: auto; /* Push sent messages to the right */
+      text-align: right; /* Right-align sent messages text */
+      font-weight: bold; /* Make the text bold */
+    }
+  
+    /* Style for received messages */
+    .received-message {
+      background-color: #66B3FF; /* Blue background for received messages */
+      color: white;
+      border-radius: 10px;
+      padding: 10px; /* Adjust padding as needed */
+      margin-right: auto; /* Push received messages to the left */
+      text-align: left; /* Left-align received messages text */
+      font-weight: bold; /* Make the text bold */
+    }
+  
+    /* Style for the timestamp */
+    .message-timestamp {
+      font-size: 12px;
+      color: white /* Change the color to a brighter shade of blue (you can choose your desired color) */
+      margin-top: 5px; /* Adjust spacing between message and timestamp */
+    }
     body {
       font-family: Arial, sans-serif;
       background-color: #f8f9fa;
@@ -146,25 +189,24 @@
     <% end %>
 
     <div class="messages-section">
-      <h2>Sent Messages</h2>
-      <% current_user.sent_messages.where(receiver: @other_user).each do |message| %>
-        <div class="card mb-2">
-          <div class="card-body">
-            <p class="card-text"><%= message.content %></p>
-            <footer class="blockquote-footer">To: <%= message.receiver.name %></footer>
-          </div>
-        </div>
-      <% end %>
-    </div>
-
-    <div class="messages-section">
-      <h2>Received Messages</h2>
-      <% current_user.received_messages.where(sender: @other_user).each do |message| %>
-        <div class="card mb-2">
-          <div class="card-body">
-            <p class="card-text"><%= message.content %></p>
-            <footer class="blockquote-footer">From: <%= message.sender.name %></footer>
-          </div>
+      <h2>Conversation</h2>
+      <% current_user.display_messages_with_a_user(@other_user).each do |message| %>
+        <div class="message-container">
+          <% if message[:sender] == current_user %>
+            <div class="sent-message">
+              <%= message[:content] %>
+              <div class="message-timestamp">
+                <%= message[:created_at] %>
+              </div>
+            </div>
+          <% else %>
+            <div class="received-message">
+              <%= message[:content] %>
+              <div class="message-timestamp">
+                <%= message[:created_at] %>
+              </div>
+            </div>
+          <% end %>
         </div>
       <% end %>
     </div>

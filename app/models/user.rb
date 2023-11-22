@@ -24,9 +24,12 @@ class User < ApplicationRecord
 
   def display_messages_with_a_user(friend)
     # Return all messages between the user and a friend
-    { 
-      sent_messages: Message.where(sender: self, receiver: friend).order(created_at: :desc),
-      received_messages: Message.where(sender: friend, receiver: self).order(created_at: :desc)
-    }
+    sent_messages = Message.where(sender: self, receiver: friend).map do |message|
+      {sender: message.sender, receiver: message.receiver, content: message.content, created_at: message.created_at}
+    end
+    received_messages = Message.where(sender: friend, receiver: self).map do |message|
+      {sender: message.sender, receiver: message.receiver, content: message.content, created_at: message.created_at}
+    end
+    (sent_messages + received_messages).sort_by { |message| message[:created_at] }.reverse
   end
 end
