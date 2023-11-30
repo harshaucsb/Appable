@@ -17,9 +17,10 @@ gem 'rails', '~> 7.1.1'
 # Use Puma as the app server
 gem 'puma', '~> 6.0'
 # Use SCSS for stylesheets
-gem 'sass-rails', '>= 6'
+#gem 'sass-rails', '>= 6'
+gem 'sass-rails'
 
-#gem 'sassc', '2.2.1'
+#gem 'sassc', '< 2.2.0'
 
 # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
 gem 'webpacker', '~> 5.0'
