@@ -293,9 +293,9 @@ DEPENDENCIES
   jbuilder (~> 2.7)
   listen (~> 3.3)
   pg
-  puma (~> 6.0)
+  puma (= 6.4.0)
   rails (~> 7.1.1)
-  sass-rails
+  sass-rails (>= 6)
   selenium-webdriver (>= 4.0.0.rc1)
   spring
   turbolinks (~> 5)
