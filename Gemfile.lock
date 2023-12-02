@@ -293,7 +293,6 @@ DEPENDENCIES
   pg
   puma (= 6.4.0)
   rails (~> 7.1.1)
-  sassc (~> 2.1)
   selenium-webdriver (>= 4.0.0.rc1)
   spring
   turbolinks (~> 5)
