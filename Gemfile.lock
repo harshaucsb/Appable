@@ -222,6 +222,8 @@ GEM
     rexml (3.2.6)
     ruby2_keywords (0.0.5)
     rubyzip (2.3.2)
+    sass-rails (6.0.0)
+      sassc-rails (~> 2.1, >= 2.1.1)
     sassc (2.1.0)
       ffi (~> 1.9)
     sassc (2.1.0-x86_64-linux)
@@ -295,7 +297,7 @@ DEPENDENCIES
   pg
   puma (= 6.4.0)
   rails (~> 7.1.1)
-  sassc (~> 2.1, < 2.2)
+  sass-rails (>= 6)
   selenium-webdriver (>= 4.0.0.rc1)
   spring
   turbolinks (~> 5)
