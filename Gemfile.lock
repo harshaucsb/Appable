@@ -157,10 +157,10 @@ GEM
     net-smtp (0.4.0)
       net-protocol
     nio4r (2.7.0)
-    nokogiri (1.15.5-x86_64-linux)
+    nokogiri (1.15.5-aarch64-linux)
       racc (~> 1.4)
     orm_adapter (0.5.0)
-    pg (1.1.4)
+    pg (1.5.4)
     popper_js (2.11.8)
     psych (5.1.1.1)
       stringio
@@ -286,7 +286,7 @@ GEM
     zeitwerk (2.6.12)
 
 PLATFORMS
-  x86_64-linux
+  aarch64-linux
 
 DEPENDENCIES
   bootsnap (>= 1.4.4)
@@ -297,7 +297,7 @@ DEPENDENCIES
   importmap-rails
   jbuilder (~> 2.7)
   listen (~> 3.3)
-  pg (~> 1.1.0)
+  pg
   puma (>= 5.0)
   rails (~> 7.1.1)
   sass-rails (>= 6)
