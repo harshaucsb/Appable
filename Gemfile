@@ -8,14 +8,27 @@ gem 'bootstrap', '~> 5.1.3'
 
 gem 'devise'
 
-gem 'pg'
+# gem 'pg'
+
+gem "sprockets-rails"
+
+gem "pg", "~> 1.1.0"
+
+# Check the latest supported [https://docs.aws.amazon.com/elasticbeanstalk/latest/platforms/platforms-supported.html#platforms-supported.ruby]
+gem "puma", ">= 5.0"
+
+gem "importmap-rails"
+
+gem "turbo-rails"
+
+gem "stimulus-rails"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
 gem 'rails', '~> 7.1.1'
 # Use sqlite3 as the database for Active Record
 #gem 'sqlite3', '~> 1.4'
 # Use Puma as the app server
-gem 'puma', '~> 6.0'
+# gem 'puma', '~> 6.0'
 # Use SCSS for stylesheets
 gem 'sass-rails', '>= 6'
 # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
