@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<!DOCTYPE tsung SYSTEM "/usr/local/share/tsung/tsung-1.0.dtd" [] >
+<tsung loglevel="notice">
+  <clients>
+    <client host="localhost" maxusers="32768" use_controller_vm="true" />
+  </clients>
+
+  <servers>
+    <server host="Appable-tsung.eba-xbebmzhu.us-west-2.elasticbeanstalk.com" port="80" type="tcp"></server>
+  </servers>
+
+   <load>
+    <arrivalphase phase="1" duration="60" unit="second">
+      <users arrivalrate="2" unit="second"></users>
+    </arrivalphase>
+    <arrivalphase phase="2" duration="60" unit="second">
+      <users arrivalrate="4" unit="second"></users>
+    </arrivalphase>
+    <arrivalphase phase="3" duration="60" unit="second">
+      <users arrivalrate="8" unit="second"></users>
+    </arrivalphase>
+    <arrivalphase phase="4" duration="60" unit="second">
+      <users arrivalrate="16" unit="second"></users>
+    </arrivalphase>
+    <arrivalphase phase="5" duration="60" unit="second">
+      <users arrivalrate="32" unit="second"></users>
+    </arrivalphase>
+    <arrivalphase phase="6" duration="60" unit="second">
+      <users arrivalrate="64" unit="second"></users>
+    </arrivalphase>
+    <arrivalphase phase="7" duration="60" unit="second">
+      <users arrivalrate="128" unit="second"></users>
+    </arrivalphase>    
+  </load>
+
+  <options>
+    <!-- Set connection timeout to 2 seconds -->
+    <option name="global_ack_timeout" value="3000"></option>
+  </options>
+
+  <sessions>
+     <session name="user_login" type="ts_http" weight="1">
+        <setdynvars sourcetype="random_number" start="1" end="100">
+          <var name="rand_user"/>
+        </setdynvars>
+    
+        <request>
+          <dyn_variable name="authenticity_token"></dyn_variable>
+          <http method="GET" url="/users/sign_in"></http>
+        </request>
+
+        <!--thinktime value="1" random="true"></thinktime-->
+        <setdynvars code='fun({Pid,DynVars})->{ok,Val}=ts_dynvars:lookup(authenticity_token,DynVars),re:replace(Val,"[+]","%2B",[global,{return,list}]) end.' sourcetype="eval"> <var name="authenticity_token" /> </setdynvars>
+
+        <request subst="true">
+        <http url="/users/sign_in" version="1.1" method="POST"
+            contents="user[email]=user%%_rand_user%%@example.com&amp;authenticity_token=%%_authenticity_token%%&amp;
+                      user[password]=password&amp;commit=Log+in"
+            content_type="application/x-www-form-urlencoded">
+          </http>
+        </request>
+
+     </session>
+  </sessions>
+
+</tsung>
