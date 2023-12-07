@@ -14,6 +14,8 @@ class PostsController < ApplicationController
         # Show a specific post
         begin
             @post = Post.find(params[:id])
+            comments_length = params[:comments_length] || 5  # Default to 5 if not provided
+            @post_comments = @post.comments.last(comments_length)
         rescue ActiveRecord::RecordNotFound
             render :json => "404 Not found"
         end
@@ -66,4 +68,3 @@ class PostsController < ApplicationController
       params.require(:post).permit(:title, :content)
     end
 end
-  
