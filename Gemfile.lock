@@ -155,6 +155,7 @@ GEM
     nokogiri (1.15.5-x86_64-linux)
       racc (~> 1.4)
     orm_adapter (0.5.0)
+    pagy (6.2.0)
     pg (1.3.5)
     psych (5.1.1.1)
       stringio
@@ -268,6 +269,7 @@ DEPENDENCIES
   importmap-rails
   jbuilder
   msgpack (~> 1.7, >= 1.7.2)
+  pagy
   pg (~> 1.3.0)
   psych (~> 5.1, >= 5.1.1.1)
   puma (>= 5.0)

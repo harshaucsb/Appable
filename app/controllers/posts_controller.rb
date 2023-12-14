@@ -3,7 +3,8 @@ class PostsController < ApplicationController
     before_action :set_post, only: [:show, :edit, :update, :destroy]
   
     def index
-        @posts = Post.all.order(updated_at: :desc)
+        # @posts = Post.all.order(updated_at: :desc)
+        @pagy_posts, @posts = pagy(Post.all.order(updated_at: :desc), items: 10)
     end
 
     def new
@@ -14,8 +15,7 @@ class PostsController < ApplicationController
         # Show a specific post
         begin
             @post = Post.find(params[:id])
-            comments_length = params[:comments_length] || 5  # Default to 5 if not provided
-            @post_comments = @post.comments.last(comments_length)
+            @pagy_post_comments, @post_comments = pagy(@post.comments.all.order(updated_at: :desc), items: 3)
         rescue ActiveRecord::RecordNotFound
             render :json => "404 Not found"
         end

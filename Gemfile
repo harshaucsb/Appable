@@ -75,3 +75,5 @@ group :test do
 end
 
 gem "pg", "~> 1.3.0"
+
+gem "pagy"

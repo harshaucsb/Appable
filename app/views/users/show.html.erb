@@ -172,155 +172,152 @@
     <h1>User Details</h1>
 
     <div class="card mb-4">
-  <div class="card-header">
-    <h2><%= @user.name %></h2>
-  </div>
-  <div class="card-body d-flex justify-content-between align-items-center">
-    <h5 class="card-title">Email: <%= @user.email %></h5>
-    <% if user_signed_in? && current_user != @user %>
-      <% if current_user.friends.include?(@user) %>
-        <%= button_to 'Unfollow', remove_friend_path, method: :delete, params: { user_id: current_user.id, friend_id: @user.id }, class: 'btn btn-danger' %>
-      <% else %>
-        <%= button_to 'Follow', add_friend_path, method: :post, params: { user_id: current_user.id, friend_id: @user.id }, class: 'btn btn-success' %>
-      <% end %>
-      <%= link_to 'Send Message', new_message_path(friend_id: @user.id), class: 'btn btn-sm btn-outline-secondary ml-3' %>
-    <% end %>
-    <% if user_signed_in? && current_user == @user %>
-      <div>
-        <%= link_to 'Edit Profile', edit_user_path(@user), class: 'btn btn-sm btn-outline-secondary' %>
-        <%= button_to 'Delete Profile', user_path(@user), method: :delete, class: 'btn btn-sm btn-outline-danger' %>
+      <div class="card-header">
+        <h2><%= @user.name %></h2>
       </div>
-    <% end %>
-  </div>
-</div>
-  
-      <!-- Following Section -->
-      <div class="row">
-        <div class="col-12">
-          <h2>Following</h2>
-          <% if @user.friends.uniq.empty? %>
-            <div class="scrollable-horizontal-section" style="text-align: center; padding: 20px;">
-              <p style="font-style: italic; color: grey;">Not currently following anyone :(</p>
-            </div>
+      <div class="card-body d-flex justify-content-between align-items-center">
+        <h5 class="card-title">Email: <%= @user.email %></h5>
+        <% if user_signed_in? && current_user != @user %>
+          <% if current_user.friends.include?(@user) %>
+            <%= button_to 'Unfollow', remove_friend_path, method: :delete, params: { user_id: current_user.id, friend_id: @user.id }, class: 'btn btn-danger' %>
           <% else %>
-          <div class="scrollable-horizontal-section">
-            <% (@user.friends).uniq.each do |friend| %>
-              <div class="card scrollable-horizontal-card">
-                <div class="card-body">
-                  <h4 class="card-title"><%= friend.name %></h4>
-                  <%= link_to 'View Profile', user_path(friend), class: 'btn btn-primary' %>
-                  <% if current_user.friends.include?(friend) %>
-                    <%= button_to 'Unfollow', remove_friend_path, method: :delete, params: { user_id: current_user.id, friend_id: friend.id }, class: 'btn btn-danger' %>
-                  <% else %>
-                    <%= button_to 'Follow', add_friend_path, method: :post, params: { user_id: current_user.id, friend_id: friend.id }, class: 'btn btn-success' %>
-                  <% end %>
-                  <%= link_to 'Message', new_message_path(friend_id: friend.id), class: 'btn btn-info' %>
-                </div>
-              </div>
-            <% end %>
+            <%= button_to 'Follow', add_friend_path, method: :post, params: { user_id: current_user.id, friend_id: @user.id }, class: 'btn btn-success' %>
+          <% end %>
+          <%= link_to 'Send Message', new_message_path(friend_id: @user.id), class: 'btn btn-sm btn-outline-secondary ml-3' %>
+        <% end %>
+        <% if user_signed_in? && current_user == @user %>
+          <div>
+            <%= link_to 'Edit Profile', edit_user_path(@user), class: 'btn btn-sm btn-outline-secondary' %>
+            <%= button_to 'Delete Profile', user_path(@user), method: :delete, class: 'btn btn-sm btn-outline-danger' %>
           </div>
+        <% end %>
+      </div>
+    </div>
+  
+    <!-- Following Section -->
+    <div class="row">
+      <div class="col-12">
+        <h2>Following</h2>
+        <% if @friends.empty? %>
+          <div class="scrollable-horizontal-section" style="text-align: center; padding: 20px;">
+            <p style="font-style: italic; color: grey;">Not currently following anyone :(</p>
+          </div>
+        <% else %>
+        <div class="scrollable-horizontal-section">
+          <% @friends.each do |friend| %>
+            <div class="card scrollable-horizontal-card">
+              <div class="card-body">
+                <h4 class="card-title"><%= friend.name %></h4>
+                <%= link_to 'View Profile', user_path(friend), class: 'btn btn-primary' %>
+                <% if current_user.friends.include?(friend) %>
+                  <%= button_to 'Unfollow', remove_friend_path, method: :delete, params: { user_id: current_user.id, friend_id: friend.id }, class: 'btn btn-danger' %>
+                <% else %>
+                  <%= button_to 'Follow', add_friend_path, method: :post, params: { user_id: current_user.id, friend_id: friend.id }, class: 'btn btn-success' %>
+                <% end %>
+                <%= link_to 'Message', new_message_path(friend_id: friend.id), class: 'btn btn-info' %>
+              </div>
+            </div>
           <% end %>
         </div>
+        <% end %>
       </div>
+    </div>
         
-      <% if user_signed_in? && current_user == @user %>
+    <% if user_signed_in? && current_user == @user %>
       <!-- Suggestions Section -->
       <div class="row">
         <div class="col-12">
         <h2>Suggestions</h2>
-          <% if @other_users.empty? %>
+          <% if @suggestions.empty? %>
             <div class="scrollable-horizontal-section" style="text-align: center; padding: 20px;">
               <p style="font-style: italic; color: grey;">No Suggestions to recommend :(</p>
             </div>
           <% else %>
             <div class="scrollable-horizontal-section">
-              <% @other_users.each do |other_user| %>
-                <% unless @user.friends.include?(other_user) %>
-                  <div class="card scrollable-horizontal-card">
-                    <div class="card-body d-flex justify-content-between align-items-center">
-                      <h4 class="card-title"><%= other_user.name %></h3>
-                      <div>
-                        <%= link_to 'View Profile', user_path(other_user), class: 'btn btn-primary' %>
-                        <%= button_to 'Follow', add_friend_path, method: :post, params: { user_id: @user.id, friend_id: other_user.id }, class: 'btn btn-success' %>
-                        <%= link_to 'Message', new_message_path(friend_id: other_user.id), class: 'btn btn-info' %>
-                      </div>
+              <% @suggestions.each do |other_user| %>
+                <div class="card scrollable-horizontal-card">
+                  <div class="card-body d-flex justify-content-between align-items-center">
+                    <h4 class="card-title"><%= other_user.name %></h3>
+                    <div>
+                      <%= link_to 'View Profile', user_path(other_user), class: 'btn btn-primary' %>
+                      <%= button_to 'Follow', add_friend_path, method: :post, params: { user_id: @user.id, friend_id: other_user.id }, class: 'btn btn-success' %>
+                      <%= link_to 'Message', new_message_path(friend_id: other_user.id), class: 'btn btn-info' %>
                     </div>
                   </div>
-                <% end %>
+                </div>
+              <% end %>
+              <%= pagy_nav(@pagy_suggestions).html_safe %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <% if user_signed_in? && current_user == @user %>
+      <!-- Conversations Section -->
+      <div class="row">
+        <div class="col-12">
+          <h2>Conversations</h2>
+          <% if @latest_messages.empty? %>
+            <div class="scrollable-horizontal-section" style="text-align: center; padding: 20px;">
+              <p style="font-style: italic; color: grey;">You don't have any messages currently :(</p>
+            </div>
+          <% else %>
+            <div class="scrollable-horizontal-section">
+              <% @latest_messages.each do |message| %>
+                <div class="card scrollable-horizontal-section">
+                  <div class="card-body">
+                    <% if message.sender_id == current_user.id %>
+                      <h5 class="card-title"><%= message.receiver.name %></h5>
+                      <p class="card-text">
+                        <strong>Sent:</strong>
+                        <%= message.content %>
+                      </p>
+                      <%= link_to 'Send Message', new_message_path(friend_id: message.receiver_id), class: 'btn btn-primary' %>
+                    <% else %>
+                      <h5 class="card-title"><%= message.sender.name %></h5>
+                      <p class="card-text">
+                        <strong>Received:</strong>
+                        <%= message.content %>
+                      </p>
+                      <%= link_to 'Send Message', new_message_path(friend_id: message.sender_id), class: 'btn btn-primary' %>
+                    <% end %>                    
+                  </div>
+                </div>
               <% end %>
             </div>
           <% end %>
+          <%= pagy_nav(@pagy_latest_messages).html_safe %>
+        </div>
       </div>
-      <% end %>
+    <% end %>
 
-      <% if user_signed_in? && current_user == @user %>
-      <!-- Conversations Section -->
-        <div class="row">
-          <div class="col-12">
-            <h2>Conversations</h2>
-            <% if @latest_messages.empty? %>
-              <div class="scrollable-horizontal-section" style="text-align: center; padding: 20px;">
-                <p style="font-style: italic; color: grey;">You don't have any messages currently :(</p>
-              </div>
-            <% else %>
-              <div class="scrollable-horizontal-section">
-                <% @latest_messages.each do |other_user, message| %>
-                  <div class="card scrollable-horizontal-section">
-                    <div class="card-body">
-                      <h5 class="card-title"><%= other_user.name %></h5>
-                      <p class="card-text">
-                        <% if message.sender_id == current_user.id %>
-                          <strong>Sent:</strong> 
-                        <% else %>
-                          <strong>Received:</strong> 
-                        <% end %>
-                        <%= message.content %>
-                      </p>
-                      <%= link_to 'Send Message', new_message_path(friend_id: other_user.id), class: 'btn btn-primary' %>
-                    </div>
-                  </div>
+    <!-- Posts Section -->
+    <div class="row">
+      <div class="col-12">
+        <h2>Posts</h2>
+        <% if user_signed_in? && current_user == @user %>
+          <div class="new-post-btn-container mb-3">
+            <%= link_to 'New Post', new_post_path, class: 'btn btn-primary' %>
+          </div>
+        <% end %>
+        <div class="scrollable-vertical-section">
+          <% @posts.each do |post| %>
+            <div class="card scrollable-vertical-card">
+              <div class="card-body">
+                <h3 class="card-title"><%= post.title %></h3>
+                <p class="card-text"><%= post.content %></p>
+                <%= link_to 'Show Post', post_path(post), class: 'btn btn-secondary me-2' %>
+                <% if user_signed_in? && current_user == post.user %>
+                  <%= link_to 'Edit', edit_post_path(post), class: 'btn btn-outline-secondary btn-sm me-2' %>
+                  <%= button_to 'Delete', post_path(post), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-outline-danger btn-sm' %>
                 <% end %>
               </div>
-            <% end %>
-            <% if @conversation_count > 5 %>
-              <div class="new-post-btn-container mb-3">
-                <%= link_to 'Load More Conversations', user_path(@user, all_conversations: true), class: 'btn btn-secondary mt-2' %>
-              </div>
-            <% end %>
-          </div>
-        </div>
-      <% end %>
-
-      <!-- Posts Section -->
-      <div class="row">
-        <div class="col-12">
-          <h2>Posts</h2>
-          <% if user_signed_in? && current_user == @user %>
-            <div class="new-post-btn-container mb-3">
-              <%= link_to 'New Post', new_post_path, class: 'btn btn-primary' %>
             </div>
           <% end %>
-          <div class="scrollable-vertical-section">
-            <% @posts.each do |post| %>
-              <div class="card scrollable-vertical-card">
-                <div class="card-body">
-                  <h3 class="card-title"><%= post.title %></h3>
-                  <p class="card-text"><%= post.content %></p>
-                  <%= link_to 'Show Post', post_path(post), class: 'btn btn-secondary me-2' %>
-                  <% if user_signed_in? && current_user == post.user %>
-                    <%= link_to 'Edit', edit_post_path(post), class: 'btn btn-outline-secondary btn-sm me-2' %>
-                    <%= button_to 'Delete', post_path(post), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-outline-danger btn-sm' %>
-                  <% end %>
-                </div>
-              </div>
-            <% end %>
-          </div>
-          <% if @total_post_count > 10 %>
-            <div class="new-post-btn-container mb-3">
-              <%= link_to 'Load All Posts', user_path(@user, all_posts: true), class: 'btn btn-secondary mt-2' %>
-            </div>
-          <% end %>
+          <%= pagy_nav(@pagy_posts).html_safe %>
         </div>
       </div>
+    </div>
 </body>
 </html>

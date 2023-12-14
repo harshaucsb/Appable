@@ -127,12 +127,10 @@
           </div>
         </div>
       <% end %>
+      <%= pagy_nav(@pagy_post_comments).html_safe %>
     <% else %>
       <p class="text-center">No comments yet.</p>
     <% end %>
-
-    <% new_length = (params[:comments_length] || 5).to_i + 5 %>
-    <%= link_to 'Load More Comments', post_path(@post, comments_length: new_length), class: 'btn btn-secondary' %>
   </div>
 </body>
 </html>

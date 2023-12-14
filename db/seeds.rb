@@ -47,7 +47,7 @@ puts "DEBUG: Creating 100 Users"
 
 begin
     for i in 1..100 do
-        puts "Creating user #{i}"
+        # puts "Creating user #{i}"
         User.create!(name: "user#{i}" ,email: "user#{i}@example.com", password: "password", password_confirmation: "password")
     end
 rescue => e

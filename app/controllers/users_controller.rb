@@ -1,42 +1,30 @@
 class UsersController < ApplicationController
     before_action :authenticate_user!
-    before_action :set_user, only: [:edit, :show, :update, :destroy, :friends]
+    before_action :set_user, only: [:edit, :show, :update, :destroy]
   
     def index
-        @users = User.all
+        @pagy_users, @users = pagy(search_users(params[:search]), items: 10)
+    end
+
+    def search_users(query)
+      if query.present?
+        User.where("name LIKE ?", "%#{query}%")
+      else
+        User.all
+      end
     end
 
     def show
         # Display the user's profile
         begin
           @friends = @user.friends
-          # Fetch all other users except the current user and their friends
-          friend_ids = current_user.friends.pluck(:id)
-          user_and_friend_ids = friend_ids << current_user.id
-          @other_users = User.where.not(id: user_and_friend_ids)
-    
-          # Fetch only the top 10 posts initially or all posts if requested
-          if params[:all_posts]
-            @posts = @user.posts.order(created_at: :desc)
-          else
-            @posts = @user.posts.order(created_at: :desc).limit(10)
-          end
+          
+          @pagy_suggestions, @suggestions = pagy(User.where.not(id: @user.id).where.not(id: @friends.pluck(:id)), items: 5)
 
-          @total_post_count = @user.posts.count
+          @pagy_posts, @posts = pagy(@user.posts.order(created_at: :desc), items: 3)
 
           if user_signed_in? && current_user == @user
-            all_users = User.where.not(id: @user.id)
-            @latest_messages = {}
-            all_users.each do |user|
-              latest_message = Message.where("(sender_id = :user_id AND receiver_id = :other_user_id) OR (sender_id = :other_user_id AND receiver_id = :user_id)", user_id: @user.id, other_user_id: user.id)
-                                      .order(created_at: :desc)
-                                      .limit(1)
-                                      .first
-              @latest_messages[user] = latest_message if latest_message
-            end
-      
-            @conversation_count = @latest_messages.size
-            @latest_messages = @latest_messages.first(5).to_h if params[:all_conversations].blank?
+            @pagy_latest_messages, @latest_messages = pagy(Message.where("receiver_id = :user_id", user_id: @user.id), items: 3)
           end
           
         rescue ActiveRecord::RecordNotFound
@@ -73,15 +61,6 @@ class UsersController < ApplicationController
             redirect_to root_path, notice: 'User was successfully destroyed.'
         end
     end
-
-    def friends
-        # Display the user's friends
-        begin
-            @friends = @user.friends
-        rescue ActiveRecord::RecordNotFound
-            render :json => "404 Not found"
-        end
-    end
   
     def add_friend
         # Logic to add a friend
@@ -104,17 +83,11 @@ class UsersController < ApplicationController
         # Redirect to the user's page with a success message
         redirect_to user_path(current_user), notice: 'Friend unfollowed successfully.'
     end
-
-    def show_messages
-        @sent_messages = @user.sent_messages
-        @received_messages = @user.received_messages
-    end
   
     private
   
     def set_user
       @user = User.find(params[:id])
-      @friends = @user.friends
     end
   
     def user_params
