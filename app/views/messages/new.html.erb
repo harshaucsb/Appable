@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<script type="text/javascript">
+<%# <script type="text/javascript">
   setTimeout(function(){
     // Check if the content text area is empty
     var contentBox = document.querySelector('textarea[name="message[content]"]');
@@ -8,7 +8,7 @@
       window.location.reload();
     }
   }, 5000); // 5000 milliseconds equals 5 seconds
-</script>
+</script> %>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -175,41 +175,42 @@
   <div class="container my-5">
     <h1 class="text-center mb-4">New Message</h1>
 
-    <%= form_with(model: @message, local: true, class: 'needs-validation', novalidate: true) do |form| %>
+    <%= form_with(model: @message, local: true, class: 'needs-validation') do |form| %>
       <div class="field mb-3">
         <%= form.label :content, class: 'form-label' %>
-        <%= form.text_area :content, class: 'form-control' %>
+        <%= form.text_area :content, class: 'form-control', required: true %>
       </div>
-
+    
       <%= form.hidden_field :receiver_id, value: @other_user.id %>
-
+    
       <div class="actions">
         <%= form.submit 'Send Message', class: 'btn btn-primary' %>
       </div>
     <% end %>
 
     <div class="messages-section">
-      <h2>Conversation</h2>
-      <% current_user.display_messages_with_a_user(@other_user).each do |message| %>
-        <div class="message-container">
-          <% if message[:sender] == current_user %>
-            <div class="sent-message">
-              <%= message[:content] %>
-              <div class="message-timestamp">
-                <%= message[:created_at] %>
-              </div>
+    <h2>Conversation</h2>
+    <% @conversation_messages.each_with_index do |message, index| %>
+      <div class="message-container">
+        <% if message[:sender] == current_user %>
+          <div class="sent-message">
+            <%= message[:content] %>
+            <div class="message-timestamp">
+              <%= message[:created_at] %>
             </div>
-          <% else %>
-            <div class="received-message">
-              <%= message[:content] %>
-              <div class="message-timestamp">
-                <%= message[:created_at] %>
-              </div>
+          </div>
+        <% else %>
+          <div class="received-message">
+            <%= message[:content] %>
+            <div class="message-timestamp">
+              <%= message[:created_at] %>
             </div>
-          <% end %>
-        </div>
-      <% end %>
-    </div>
-  </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+
+    <% new_length = (params[:conversation_length] || 10).to_i + 10 %>
+    <%= link_to 'Show More Messages', new_message_path(friend_id: @other_user.id, conversation_length: new_length), class: 'btn' %>
 </body>
 </html>

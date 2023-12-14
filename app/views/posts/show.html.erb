@@ -93,7 +93,7 @@
     </div>
   </nav>
 
-<div class="mt-4 mb-4">
+  <div class="mt-4 mb-4">
   <div class="text-center">
     <h1><%= @post.title %></h1>
     <p><%= @post.content %></p>
@@ -103,6 +103,8 @@
   <div class="d-flex justify-content-center">
     <% if user_signed_in? && current_user==@post.user %>
     <%= link_to "Edit", edit_post_path(@post), class: "btn btn-outline-secondary btn-sm me-2" %>
+    |
+    <%= button_to "Delete", post_path(@post), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-outline-danger btn-sm ms-2" %>
     |
     <% end %>
     <%= link_to "User's Posts", user_path(@post.user), class: "btn btn-outline-secondary btn-sm ms-2" %>
@@ -116,7 +118,7 @@
       <div class="mt-4 mb-2 text-center">
         <h2>Comments</h2>
       </div>
-      <% @post.comments.reverse.each do |comment| %>
+      <% @post_comments.reverse.each do |comment| %>
         <div class="card mb-2">
           <div class="card-body">
             <strong>@</strong> <%= comment.user.name %>
@@ -129,6 +131,8 @@
       <p class="text-center">No comments yet.</p>
     <% end %>
 
+    <% new_length = (params[:comments_length] || 5).to_i + 5 %>
+    <%= link_to 'Load More Comments', post_path(@post, comments_length: new_length), class: 'btn btn-secondary' %>
   </div>
 </body>
 </html>

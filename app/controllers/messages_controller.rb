@@ -3,6 +3,8 @@ class MessagesController < ApplicationController
   
     def new
       @message = Message.new
+      conversation_length = params[:conversation_length] || 10  # Default to 10 if not provided
+      @conversation_messages = current_user.display_top_messages_with_a_user(@other_user, conversation_length.to_i)
     end
   
     def create
@@ -24,7 +26,7 @@ class MessagesController < ApplicationController
       @user = User.find(params[:user_id])
       @friend = User.find(params[:friend_id])
       # You will need to implement a scope or a method to fetch the chat messages
-      @chat_messages = Message.chat_between(@user, @friend)
+      #@chat_messages = Message.chat_between(@user, @friend)
     end
     
 

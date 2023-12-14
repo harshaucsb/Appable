@@ -32,4 +32,19 @@ class User < ApplicationRecord
     end
     (sent_messages + received_messages).sort_by { |message| message[:created_at] }.reverse
   end
+
+  def display_top_messages_with_a_user(friend, conversation_length = 10)
+    # Fetch the latest messages based on conversation_length
+    sent_messages = Message.where(sender: self, receiver: friend).order(created_at: :desc).limit(conversation_length)
+    received_messages = Message.where(sender: friend, receiver: self).order(created_at: :desc).limit(conversation_length)
+  
+    # Combine, sort, and then take the top messages based on conversation_length
+    all_messages = (sent_messages + received_messages).sort_by { |message| message.created_at }.reverse.take(conversation_length)
+  
+    # Convert to a format suitable for the view
+    all_messages.map do |message|
+      { sender: message.sender, receiver: message.receiver, content: message.content, created_at: message.created_at }
+    end
+  end
 end
+
