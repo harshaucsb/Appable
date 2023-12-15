@@ -61,7 +61,7 @@ class UsersController < ApplicationController
         if @user != current_user
             redirect_to users_url, notice: "Sorry, but you are only allowed to edit your own profile."
         else
-            Rails.cache.delete("feed_posts_#{current_user.id}") if post_created?
+            Rails.cache.delete("feed_posts_#{current_user.id}")
             @user.destroy
             User.delete(@user)
             redirect_to root_path, notice: 'User was successfully destroyed.'
@@ -75,7 +75,7 @@ class UsersController < ApplicationController
         # Directly create the following without any checks
         current_user.friends << new_friend
 
-        Rails.cache.delete("feed_posts_#{current_user.id}") if post_created?
+        Rails.cache.delete("feed_posts_#{current_user.id}")
         
         # Redirect to the user's page with a success message
         redirect_to user_path(current_user), notice: 'Friend followed successfully.'
@@ -88,7 +88,7 @@ class UsersController < ApplicationController
         # Remove person from user's following list
         current_user.friends.delete(friend)
 
-        Rails.cache.delete("feed_posts_#{current_user.id}") if post_created?
+        Rails.cache.delete("feed_posts_#{current_user.id}")
 
         # Redirect to the user's page with a success message
         redirect_to user_path(current_user), notice: 'Friend unfollowed successfully.'
