@@ -25,6 +25,7 @@ class PostsController < ApplicationController
       @post = current_user.posts.build(post_params)
       if @post.save
         # Handle successful save
+        Rails.cache.delete("feed_posts_#{current_user.id}") if post_created?
         redirect_to @post, notice: 'Post was successfully created.'
       else
         # Handle save failure
@@ -39,6 +40,7 @@ class PostsController < ApplicationController
             redirect_to @post, notice: 'Only owner of the post is allowed to update.'
         elsif @post.update(post_params)
             # Handle successful update
+            Rails.cache.delete("feed_posts_#{current_user.id}") if post_created?
             redirect_to @post, notice: 'Post was successfully updated.'
         else
             # Handle update failure
@@ -53,6 +55,7 @@ class PostsController < ApplicationController
         else
             @post.destroy
             # Handle post deletion
+            Rails.cache.delete("feed_posts_#{current_user.id}") if post_created?
             redirect_to posts_url, notice: 'Post was successfully destroyed.'
         end
     end
