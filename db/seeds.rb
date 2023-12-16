@@ -43,10 +43,10 @@ puts "DEBUG: Cleaning up all the databases"
 #################################
 # Creating 100 Users
 #################################
-puts "DEBUG: Creating 500 Users"
+puts "DEBUG: Creating 1000 Users"
 
 begin
-    for i in 1..500 do
+    for i in 1..1000 do
         # puts "Creating user #{i}"
         User.create!(name: "user#{i}" ,email: "user#{i}@example.com", password: "password", password_confirmation: "password")
     end
